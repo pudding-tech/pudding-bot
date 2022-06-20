@@ -54,7 +54,7 @@ const allOperational = new MessageEmbed({
     },
     {
       name: "\u200b",
-      value: "Request a show or movie at <https://ombi.hundseth.com>\n\nContact @aydex or <@111967042424274944> if you have questions"
+      value: "Request a show or movie at <https://ombi.hundseth.com>\n\nContact <@110276423779897344> or <@111967042424274944> if you have questions"
     }
   ],
   color: BOT_COLOR
@@ -74,7 +74,7 @@ const onlyPuddingflix = new MessageEmbed({
     },
     {
       name: "\u200b",
-      value: "Request a show or movie at <https://ombi.hundseth.com>\n\nContact @aydex or <@111967042424274944> if you have questions"
+      value: "Request a show or movie at <https://ombi.hundseth.com>\n\nContact <@110276423779897344> or <@111967042424274944> if you have questions"
     }
   ],
   color: BOT_COLOR
@@ -94,7 +94,7 @@ const onlyDuckflix = new MessageEmbed({
     },
     {
       name: "\u200b",
-      value: "Request a show or movie at <https://ombi.hundseth.com>\n\nContact @aydex or <@111967042424274944> if you have questions"
+      value: "Request a show or movie at <https://ombi.hundseth.com>\n\nContact <@110276423779897344> or <@111967042424274944> if you have questions"
     }
   ],
   color: BOT_COLOR
@@ -114,7 +114,7 @@ const noneOperational = new MessageEmbed({
     },
     {
       name: "\u200b",
-      value: "Request a show or movie at <https://ombi.hundseth.com>\n\nContact @aydex or <@111967042424274944> if you have questions"
+      value: "Request a show or movie at <https://ombi.hundseth.com>\n\nContact <@110276423779897344> or <@111967042424274944> if you have questions"
     }
   ],
   color: BOT_COLOR
