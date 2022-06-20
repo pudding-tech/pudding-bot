@@ -15,5 +15,5 @@ export const puddingtech: CommandDefinition = {
     });
 
     await msg.channel.send({ embeds: [puddingtechEmbed] });
-  },
+  }
 };

@@ -27,7 +27,7 @@ bot.once("ready", () => {
 
   // Connect to plex servers
   plexConnect(bot);
-})
+});
 
 bot.on('disconnect', () => {
   console.log(bot.user!.username + " has logged out...")
@@ -49,8 +49,7 @@ bot.on("messageCreate", async (msg) => {
     const cmdInput = msg.content.substring(CMD_PREFIX.length, msg.content.includes(" ") ? msg.content.indexOf(" ") : msg.content.length)
     
     const command = commands.find(cmd => cmd.name === cmdInput);
-    console.log("Sending to channel: " + msg.channel.id);
-
+    
     if (command) {
       console.log(`Command "${command.name}" used by ${msg.author.tag}`);
       try {

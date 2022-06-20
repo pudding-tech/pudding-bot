@@ -24,5 +24,5 @@ export const help: CommandDefinition = {
     });
 
     await msg.channel.send({ embeds: [helpEmbed] });
-  },
+  }
 };

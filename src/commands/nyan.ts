@@ -20,5 +20,5 @@ export const nyan: CommandDefinition = {
     });
 
     await msg.channel.send({ embeds: [nyanEmbed] });
-  },
+  }
 };

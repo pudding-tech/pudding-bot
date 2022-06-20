@@ -1,5 +1,5 @@
 import Discord from 'discord.js';
-import { servicesMessage } from './messages/servicesMessage';
+import { plexMessage } from './messages/plexMessage';
 var PlexAPI = require('plex-api');
 var cron = require('node-cron');
 
@@ -48,7 +48,7 @@ export const plexConnect = async (bot: Discord.Client) => {
     duckflixLastValue = duckflix;
 
     console.log("Puddingflix online: " + puddingflix + "\nDuckflix online: " + duckflix);
-    servicesMessage(bot, [puddingflix, duckflix]);
+    plexMessage(bot, [puddingflix, duckflix]);
   };
 
   serversCheck();
