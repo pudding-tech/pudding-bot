@@ -1,0 +1,25 @@
+{
+  "name": "pudding-bot",
+  "version": "0.1.0",
+  "description": "PuddingBot serves the discord server Puddings",
+  "scripts": {
+    "build": "tsc --project ./",
+    "start": "npx ts-node src/index.ts",
+    "dev": "npx nodemon src/index.ts",
+    "dev2": "concurrently \"tsc -w\" \"npx nodemon build/index.js\""
+  },
+  "author": "MotionDuck",
+  "dependencies": {
+    "discord.js": "^13.8.0",
+    "dotenv": "^16.0.1",
+    "node-cron": "^3.0.1",
+    "plex-api": "^5.3.2"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "eslint": "^8.18.0",
+    "nodemon": "^2.0.16",
+    "ts-node": "^10.8.1",
+    "typescript": "^4.7.3"
+  }
+}
