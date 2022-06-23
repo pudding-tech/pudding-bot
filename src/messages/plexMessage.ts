@@ -41,7 +41,7 @@ export const plexMessage = async (client: Discord.Client, serverStatus: Array<bo
 
 const allOperational = new MessageEmbed({
   title: "Current status of Plex servers",
-  description: "See which plex servers are currently operational. This post is automatically updated every hour.\n\u200b",
+  description: "See which Plex servers are currently operational. This post is automatically updated every hour.\n\u200b",
   fields: [
     {
       name: "Puddingflix :white_check_mark:",
@@ -50,7 +50,7 @@ const allOperational = new MessageEmbed({
     },
     {
       name: "Duckflix :white_check_mark:",
-      value: "*Operational (downtime to be expected due to server migration)*"
+      value: "*Operational*"
     },
     {
       name: "\u200b",
@@ -62,7 +62,7 @@ const allOperational = new MessageEmbed({
 
 const onlyPuddingflix = new MessageEmbed({
   title: "Current status of Plex servers",
-  description: "See which plex servers are currently operational. This post is automatically updated every hour.\n\u200b",
+  description: "See which Plex servers are currently operational. This post is automatically updated every hour.\n\u200b",
   fields: [
     {
       name: "Puddingflix :white_check_mark:",
@@ -82,7 +82,7 @@ const onlyPuddingflix = new MessageEmbed({
 
 const onlyDuckflix = new MessageEmbed({
   title: "Current status of Plex servers",
-  description: "See which plex servers are currently operational. This post is automatically updated every hour.\n\u200b",
+  description: "See which Plex servers are currently operational. This post is automatically updated every hour.\n\u200b",
   fields: [
     {
       name: "Puddingflix :x:",
@@ -90,7 +90,7 @@ const onlyDuckflix = new MessageEmbed({
     },
     {
       name: "Duckflix :white_check_mark:",
-      value: "*Operational (downtime to be expected due to server migration)*"
+      value: "*Operational*"
     },
     {
       name: "\u200b",
@@ -102,7 +102,7 @@ const onlyDuckflix = new MessageEmbed({
 
 const noneOperational = new MessageEmbed({
   title: "Current status of Plex servers",
-  description: "See which plex servers are currently operational. This post is automatically updated every hour.\n\u200b",
+  description: "See which Plex servers are currently operational. This post is automatically updated every hour.\n\u200b",
   fields: [
     {
       name: "Puddingflix :x:",

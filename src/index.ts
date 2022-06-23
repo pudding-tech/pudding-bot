@@ -40,8 +40,6 @@ bot.on("messageCreate", async (msg) => {
   if (msg.author.bot)
     return;
 
-  console.log(`[${msg.author.tag}] ${msg.content}`)
-
   // Check if command
   if (msg.content.startsWith(CMD_PREFIX)) {
 
