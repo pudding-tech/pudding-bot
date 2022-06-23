@@ -3,7 +3,7 @@ import { CommandDefinition } from '../CommandDefinition';
 const { MessageEmbed } = require('discord.js');
 import { BOT_COLOR } from '../constants';
 
-const URL = "https://c.tenor.com/lTtlX5xlfmgAAAAC/nyan-cat.gif"
+const img = "https://c.tenor.com/lTtlX5xlfmgAAAAC/nyan-cat.gif"
 
 export const nyan: CommandDefinition = {
   name: "nyan",
@@ -14,7 +14,7 @@ export const nyan: CommandDefinition = {
       description: "nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan"
         + "nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan"
         + "nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan",
-      image: { url: URL},
+      image: { url: img},
       color: BOT_COLOR,
       footer: { text: 'nyannyannyannyannyannyannyannyannyannyannyannyannyannyannyannyan' },
     });
