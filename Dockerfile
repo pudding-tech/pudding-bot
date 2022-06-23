@@ -19,5 +19,9 @@ CMD ["node", "build/index.js"]
 #CMD ["npx", "ts-node", "src/index.ts"]
 
 # Commands for building image and running container:
-# docker build -t puddingbot ./
-# docker run -d --name puddingbot puddingbot
+#   docker build -t puddingbot ./
+#   docker run -d --name puddingbot --env-file .env puddingbot
+
+# Save and load image (for transferring to another host):
+#   docker save -o puddingbot.tar puddingbot
+#   docker load -i puddingbot.tar
