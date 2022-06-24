@@ -22,9 +22,6 @@ bot.once("ready", () => {
     }]
   });
 
-  // Create or edit services message
-  //servicesMessage(bot, true);
-
   // Connect to plex servers
   plexConnect(bot);
 });

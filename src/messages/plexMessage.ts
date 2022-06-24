@@ -11,7 +11,7 @@ export const plexMessage = async (client: Discord.Client, serverStatus: Array<bo
     .then(async (messages) => {
       if (messages.size === 0) {
         // Create new message
-        channel.send({ embeds: [allOperational] });
+        channel.send({ embeds: [plexStatusMsg(status.puddingflixOperationalHeader, status.puddingflixOperationalSubtext, status.duckflixOperationalHeader, status.duckflixOperationalSubtext)] });
       }
       else {
         // Edit existing message
@@ -19,16 +19,16 @@ export const plexMessage = async (client: Discord.Client, serverStatus: Array<bo
           try {
             
             if (serverStatus[0] === true && serverStatus[1] === true) {
-              await message[1].edit({ embeds: [allOperational] });
+              await message[1].edit({ embeds: [plexStatusMsg(status.puddingflixOperationalHeader, status.puddingflixOperationalSubtext, status.duckflixOperationalHeader, status.duckflixOperationalSubtext)] });
             }
             else if (serverStatus[0] === true && serverStatus[1] === false) {
-              await message[1].edit({ embeds: [onlyPuddingflix] });
+              await message[1].edit({ embeds: [plexStatusMsg(status.puddingflixOperationalHeader, status.puddingflixOperationalSubtext, status.duckflixDownHeader, status.duckflixDownSubtext)] });
             }
             else if (serverStatus[0] === false && serverStatus[1] === true) {
-              await message[1].edit({ embeds: [onlyDuckflix] });
+              await message[1].edit({ embeds: [plexStatusMsg(status.puddingflixDownHeader, status.puddingflixDownSubtext, status.duckflixOperationalHeader, status.duckflixOperationalSubtext)] });
             }
             else if (serverStatus[0] === false && serverStatus[1] === false) {
-              await message[1].edit({ embeds: [noneOperational] });
+              await message[1].edit({ embeds: [plexStatusMsg(status.puddingflixDownHeader, status.puddingflixDownSubtext, status.duckflixDownHeader, status.duckflixDownSubtext)] });
             }
           }
           catch (e) {
@@ -39,83 +39,35 @@ export const plexMessage = async (client: Discord.Client, serverStatus: Array<bo
     })
 };
 
-const allOperational = new MessageEmbed({
-  title: "Current status of Plex servers",
-  description: "See which Plex servers are currently operational. This post is automatically updated every hour.\n\u200b",
-  fields: [
-    {
-      name: "Puddingflix :white_check_mark:",
-      value: "*Operational*",
-      inline: false
-    },
-    {
-      name: "Duckflix :white_check_mark:",
-      value: "*Operational*"
-    },
-    {
-      name: "\u200b",
-      value: "Request a show or movie at <https://ombi.hundseth.com>\n\nContact <@110276423779897344> or <@111967042424274944> if you have questions"
-    }
-  ],
-  color: BOT_COLOR
-});
+let status = {
+  puddingflixOperationalHeader: "Puddingflix :white_check_mark:",
+  puddingflixOperationalSubtext: "*Operational*",
+  duckflixOperationalHeader: "Duckflix :white_check_mark:",
+  duckflixOperationalSubtext: "*Operational*",
+  puddingflixDownHeader: "Puddingflix :x:",
+  puddingflixDownSubtext: "*Server down*",
+  duckflixDownHeader: "Duckflix :x:",
+  duckflixDownSubtext: "*Server down*",
+};
 
-const onlyPuddingflix = new MessageEmbed({
-  title: "Current status of Plex servers",
-  description: "See which Plex servers are currently operational. This post is automatically updated every hour.\n\u200b",
-  fields: [
-    {
-      name: "Puddingflix :white_check_mark:",
-      value: "*Operational*"
-    },
-    {
-      name: "Duckflix :x:",
-      value: "*Server down*"
-    },
-    {
-      name: "\u200b",
-      value: "Request a show or movie at <https://ombi.hundseth.com>\n\nContact <@110276423779897344> or <@111967042424274944> if you have questions"
-    }
-  ],
-  color: BOT_COLOR
-});
-
-const onlyDuckflix = new MessageEmbed({
-  title: "Current status of Plex servers",
-  description: "See which Plex servers are currently operational. This post is automatically updated every hour.\n\u200b",
-  fields: [
-    {
-      name: "Puddingflix :x:",
-      value: "*Server down*"
-    },
-    {
-      name: "Duckflix :white_check_mark:",
-      value: "*Operational*"
-    },
-    {
-      name: "\u200b",
-      value: "Request a show or movie at <https://ombi.hundseth.com>\n\nContact <@110276423779897344> or <@111967042424274944> if you have questions"
-    }
-  ],
-  color: BOT_COLOR
-});
-
-const noneOperational = new MessageEmbed({
-  title: "Current status of Plex servers",
-  description: "See which Plex servers are currently operational. This post is automatically updated every hour.\n\u200b",
-  fields: [
-    {
-      name: "Puddingflix :x:",
-      value: "*Server down*"
-    },
-    {
-      name: "Duckflix :x:",
-      value: "*Server down*"
-    },
-    {
-      name: "\u200b",
-      value: "Request a show or movie at <https://ombi.hundseth.com>\n\nContact <@110276423779897344> or <@111967042424274944> if you have questions"
-    }
-  ],
-  color: BOT_COLOR
-});
+const plexStatusMsg = (puddingflixHeader: string, puddingflixSub: string, duckflixHeader: string, duckflixSub: string) => {
+  return new MessageEmbed({
+    title: "Current status of Plex servers",
+    description: "See which Plex servers are currently operational. This post is automatically updated every hour.\n\u200b",
+    fields: [
+      {
+        name: puddingflixHeader,
+        value: puddingflixSub
+      },
+      {
+        name: duckflixHeader,
+        value: duckflixSub
+      },
+      {
+        name: "\u200b",
+        value: "Request a show or movie at <https://ombi.hundseth.com>\n\nContact <@110276423779897344> or <@111967042424274944> if you have questions"
+      }
+    ],
+    color: BOT_COLOR
+  }
+)};
