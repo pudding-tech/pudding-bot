@@ -2,6 +2,7 @@ import Discord from 'discord.js';
 import dotenv from 'dotenv';
 import { commands } from './commands';
 import { CMD_PREFIX } from './constants';
+import { editMessage } from './messages/editMessage';
 import { plexConnect } from './plex';
 
 dotenv.config();
@@ -43,6 +44,11 @@ bot.on("messageCreate", async (msg) => {
     // Trim input to command only
     const cmdInput = msg.content.substring(CMD_PREFIX.length, msg.content.includes(" ") ? msg.content.indexOf(" ") : msg.content.length)
     
+    if (cmdInput === "edit") {
+      editMessage(bot, msg, msg.content.substring(6, msg.content.length));
+      return;
+    }
+
     const command = commands.find(cmd => cmd.name === cmdInput);
     
     if (command) {
