@@ -2,6 +2,7 @@ import Discord from 'discord.js';
 import dotenv from 'dotenv';
 import { commands } from './commands';
 import { CMD_PREFIX } from './constants';
+import { editMessage } from './messages/editMessage';
 import { plexConnect } from './plex';
 
 dotenv.config();
@@ -17,7 +18,7 @@ bot.once("ready", () => {
   bot.user!.setPresence({
     status: "online",
     activities: [{
-        name: "with pudding",
+        name: ".help",
         type: "PLAYING"
     }]
   });
@@ -43,6 +44,12 @@ bot.on("messageCreate", async (msg) => {
     // Trim input to command only
     const cmdInput = msg.content.substring(CMD_PREFIX.length, msg.content.includes(" ") ? msg.content.indexOf(" ") : msg.content.length)
     
+    if (cmdInput === "edit") {
+      editMessage(bot, msg, msg.content.substring(6, msg.content.length));
+      console.log(`Command "${msg.content}" used by ${msg.author.tag}`);
+      return;
+    }
+
     const command = commands.find(cmd => cmd.name === cmdInput);
     
     if (command) {
@@ -56,7 +63,8 @@ bot.on("messageCreate", async (msg) => {
       }
     }
     else {
-      console.log("Command doesn't exist");
+      msg.reply("Command does not exist.\n" +
+        "Use `.help` for a list of available commands.");
     }
   }
 });
