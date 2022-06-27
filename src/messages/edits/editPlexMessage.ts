@@ -29,17 +29,21 @@ export const editPlexMessage = async (bot: Discord.Client, msg: Discord.Message,
         serverSelect = [null, status];
       }
 
-      const customStatus = text.split('"')[1];
-      const packace = {edit: true, status: customStatus};
+      const customStatus = text.split('"')[1] || "";
 
       // Check permissions
       const author = msg.author.id;
       if (author !== "110276423779897344" && author !== "111967042424274944") {
-        msg.reply("You do not have permissions to change Plex services message");
+        msg.reply("You do not have permissions to change the Plex services message");
         return;
       }
       
-      plexMessage(bot, serverSelect, packace);
+      try {
+        await plexMessage(bot, serverSelect, customStatus);
+      }
+      catch (e) {
+        console.log(e);
+      }
       msg.reply("You have successfully editited the Plex services message");
       return;
     }
@@ -52,8 +56,8 @@ export const editPlexMessage = async (bot: Discord.Client, msg: Discord.Message,
     "*<operational>* can be either 1 (online) or 0 (offline)\n" +
     "*<status>* is optional, and used for writing a custom message for the server's status. " +
     "If nothing is supplied the default status for online and offline will be used. " +
-    "*<status>* should be encapsulated in \"\" double quotes.\n\n" +
-    "Example: `.edit plex puddingflix 0 \"Maintenance\"`, `.edit plex puddingflix 1`";
+    "*<status>* should be encapsulated in \"\" (double quotes).\n\n" +
+    "Examples: `.edit plex puddingflix 0 \"Maintenance\"`, `.edit plex puddingflix 1`";
     
     msg.channel.send(text);
     return;

@@ -18,7 +18,7 @@ bot.once("ready", () => {
   bot.user!.setPresence({
     status: "online",
     activities: [{
-        name: "with pudding",
+        name: ".help",
         type: "PLAYING"
     }]
   });
@@ -46,6 +46,7 @@ bot.on("messageCreate", async (msg) => {
     
     if (cmdInput === "edit") {
       editMessage(bot, msg, msg.content.substring(6, msg.content.length));
+      console.log(`Command "${msg.content}" used by ${msg.author.tag}`);
       return;
     }
 
@@ -62,7 +63,8 @@ bot.on("messageCreate", async (msg) => {
       }
     }
     else {
-      console.log("Command doesn't exist");
+      msg.reply("Command does not exist.\n" +
+        "Use `.help` for a list of available commands.");
     }
   }
 });

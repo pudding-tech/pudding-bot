@@ -2,6 +2,7 @@ import Discord from 'discord.js';
 import { plexMessage } from './messages/plexMessage';
 const PlexAPI = require('plex-api');
 const cron = require('node-cron');
+const SData = require('simple-data-storage');
 
 export const plexConnect = async (bot: Discord.Client) => {
 
@@ -58,22 +59,23 @@ export const plexConnect = async (bot: Discord.Client) => {
       console.error("Could not connect to Duckflix");
     }
 
+    puddingflixLastValue = SData("puddingflix");
+    duckflixLastValue = SData("duckflix");
+
     // Do not send edit request if status has not changed
     if (puddingflix === puddingflixLastValue && duckflix === duckflixLastValue) {
       console.log("No plex status changes")
       return;
     }
-    puddingflixLastValue = puddingflix;
-    duckflixLastValue = duckflix;
     //console.log("Puddingflix online: " + puddingflix + "\nDuckflix online: " + duckflix);
 
     plexMessage(bot, [puddingflix, duckflix]);
   };
 
-  serversCheck();
+  await serversCheck();
 
   // Run check every hour
   cron.schedule('0 * * * *', async () => {
-    serversCheck();
+    await serversCheck();
   });
 };

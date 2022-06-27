@@ -26,6 +26,6 @@ export const editMessage = async (bot: Discord.Client, msg: Discord.Message, tex
     return;
   }
 
-  msg.reply("Nonexistant edit command supplied.\n" +
+  msg.reply("Edit command not found.\n" +
     "Use `.edit help` for a list of available edit commands.");
 };

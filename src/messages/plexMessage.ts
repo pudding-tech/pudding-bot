@@ -1,39 +1,17 @@
 import Discord, { MessageEmbed } from 'discord.js';
 import { BOT_COLOR, Channels } from '../constants';
+const SData = require('simple-data-storage');
 
 /**
  * Create or edit Plex message in services Discord channel
  * @param {Discord.Client} client Discord bot
  * @param {Array<boolean>} serverStatus Message object itself, used for sending messages
- * @param {object=} [custom] Object to supply if message is custom made
+ * @param {string} [customStatus] Optional custom server status message
  */
-export const plexMessage = async (client: Discord.Client, serverStatus: Array<boolean>, custom?: {edit: boolean, status: string}) => {
+export const plexMessage = async (client: Discord.Client, serverStatus: Array<boolean>, customStatus?: string) => {
 
   // Get 'services' channel of Puddings server
   const channel = await client.channels.fetch(Channels.SERVICES_CHANNEL) as Discord.TextChannel;
-
-  // Check for custom Plex message
-  if (custom?.edit) {
-
-    // Check for status and reset command
-    if (custom.status === undefined || custom.status === "" || custom.status === "reset") {
-      // Set subtext depending on whether server is online or not
-      if (serverStatus[0] || serverStatus[1])
-        custom.status = texts.upSubtextStandard.substring(1, texts.upSubtextStandard.length -1);
-      else
-        custom.status = texts.downSubtextStandard.substring(1, texts.downSubtextStandard.length -1);
-    }
-
-    // Check which server message is for
-    if (serverStatus[0] !== null) {
-      texts.puddingflixHeader = texts.puddingflix + (serverStatus[0] ? texts.upCheckmark : texts.downCheckmark);
-      texts.puddingflixSubtext = "*" + custom.status + "*";
-    }
-    else if (serverStatus[1] !== null) {
-      texts.duckflixHeader = texts.duckflix + (serverStatus[1] ? texts.upCheckmark : texts.downCheckmark);
-      texts.duckflixSubtext = "*" + custom.status + "*";
-    }
-  }
   
   // Get all messages for the channel, send new if channel is empty, or edit message if not
   channel.messages.fetch()
@@ -41,15 +19,17 @@ export const plexMessage = async (client: Discord.Client, serverStatus: Array<bo
       if (messages.size === 0) {
         // Create new message
         setStatus();
-        channel.send({ embeds: [plexStatusMsg(texts.puddingflixHeader, texts.puddingflixSubtext, texts.duckflixHeader, texts.duckflixSubtext)] });
+        await channel.send({ embeds: [plexStatusMsg(texts.puddingflixHeader, texts.puddingflixSubtext, texts.duckflixHeader, texts.duckflixSubtext)] });
       }
       else {
         // Edit existing message
         for (const message of messages) {
           try {
-            // Set status if not a custom edit
-            if (!custom?.edit) {
+            if (customStatus === undefined) {
               setStatus();
+            }
+            else {
+              setStatusCustom();
             }
             await message[1].edit({ embeds: [plexStatusMsg(texts.puddingflixHeader, texts.puddingflixSubtext, texts.duckflixHeader, texts.duckflixSubtext)] });
           }
@@ -60,32 +40,80 @@ export const plexMessage = async (client: Discord.Client, serverStatus: Array<bo
       }
     });
 
-    const setStatus = () => {
-      if (serverStatus[0] === true && serverStatus[1] === true) {
+  const setStatusCustom = () => {
+    if (customStatus === undefined)
+      return;
+
+    // Check for custom status message and reset command
+    if (customStatus === "" || customStatus === "reset") {
+      // Set subtext depending on whether server is online or not
+      if (serverStatus[0] || serverStatus[1])
+        customStatus = texts.upSubtextStandard.substring(1, texts.upSubtextStandard.length -1);
+      else
+        customStatus = texts.downSubtextStandard.substring(1, texts.downSubtextStandard.length -1);
+    }
+
+    // Check which server message is for, update text and global server status
+    if (serverStatus[0] !== null) {
+      texts.puddingflixHeader = texts.puddingflix + (serverStatus[0] ? texts.upCheckmark : texts.downCheckmark);
+      texts.puddingflixSubtext = "*" + customStatus + "*";
+      SData("puddingflix", serverStatus[0]);
+    }
+    else if (serverStatus[1] !== null) {
+      texts.duckflixHeader = texts.duckflix + (serverStatus[1] ? texts.upCheckmark : texts.downCheckmark);
+      texts.duckflixSubtext = "*" + customStatus + "*";
+      SData("duckflix", serverStatus[1]);
+    }
+    console.log("puddingflix: " + SData("puddingflix"));
+    console.log("duckflix: " + SData("duckflix"));
+
+  }
+
+  const setStatus = () => {
+    if (serverStatus[0] === true && serverStatus[1] === true) {
+      if (serverStatus[0] !== SData("puddingflix")) {
         texts.puddingflixHeader = texts.puddingflix + texts.upCheckmark;
         texts.puddingflixSubtext = texts.upSubtextStandard;
+      }
+      if (serverStatus[1] !== SData("duckflix")) {
         texts.duckflixHeader = texts.duckflix + texts.upCheckmark;
         texts.duckflixSubtext = texts.upSubtextStandard;
       }
-      else if (serverStatus[0] === true && serverStatus[1] === false) {
+    }
+    else if (serverStatus[0] === true && serverStatus[1] === false) {
+      if (serverStatus[0] !== SData("puddingflix")) {
         texts.puddingflixHeader = texts.puddingflix + texts.upCheckmark;
         texts.puddingflixSubtext = texts.upSubtextStandard;
-        texts.duckflixHeader = texts.duckflix + texts.downCheckmark;
-        texts.duckflixSubtext = texts.downSubtextStandard;
       }
-      else if (serverStatus[0] === false && serverStatus[1] === true) {
-        texts.puddingflixHeader = texts.puddingflix + texts.downCheckmark;
-        texts.puddingflixSubtext = texts.downSubtextStandard;
-        texts.duckflixHeader = texts.duckflix + texts.upCheckmark;
-        texts.duckflixSubtext = texts.upSubtextStandard;
-      }
-      else if (serverStatus[0] === false && serverStatus[1] === false) {
-        texts.puddingflixHeader = texts.puddingflix + texts.downCheckmark;
-        texts.puddingflixSubtext = texts.downSubtextStandard;
+      if (serverStatus[1] !== SData("duckflix")) {
         texts.duckflixHeader = texts.duckflix + texts.downCheckmark;
         texts.duckflixSubtext = texts.downSubtextStandard;
       }
     }
+    else if (serverStatus[0] === false && serverStatus[1] === true) {
+      if (serverStatus[0] !== SData("puddingflix")) {
+        texts.puddingflixHeader = texts.puddingflix + texts.downCheckmark;
+        texts.puddingflixSubtext = texts.downSubtextStandard;
+      }
+      if (serverStatus[1] !== SData("duckflix")) {
+        texts.duckflixHeader = texts.duckflix + texts.upCheckmark;
+        texts.duckflixSubtext = texts.upSubtextStandard;
+      }
+    }
+    else if (serverStatus[0] === false && serverStatus[1] === false) {
+      if (serverStatus[0] !== SData("puddingflix")) {
+        texts.puddingflixHeader = texts.puddingflix + texts.downCheckmark;
+        texts.puddingflixSubtext = texts.downSubtextStandard;
+      }
+      if (serverStatus[1] !== SData("duckflix")) {
+        texts.duckflixHeader = texts.duckflix + texts.downCheckmark;
+        texts.duckflixSubtext = texts.downSubtextStandard;
+      }
+    }
+    // Update server status saved cache
+    SData("puddingflix", serverStatus[0]);
+    SData("duckflix", serverStatus[1]);
+  }
 };
 
 let texts = {
