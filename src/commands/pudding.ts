@@ -1,11 +1,20 @@
 import { CommandDefinition } from '../CommandDefinition';
 //import { MessageEmbed } from 'Discord.js';
 const { MessageEmbed } = require('discord.js');
+import { BOT_COLOR, Category } from '../constants';
+
+const img: string = "https://c.tenor.com/02c70YZ5A5IAAAAC/pudding.gif";
 
 export const pudding: CommandDefinition = {
   name: "pudding",
-  description: "Lots of pudding for everyone!",
+  category: Category.IMAGES,
   executor: async (msg) => {
-    await msg.channel.send("Lots of pudding for everyone!");
+    const puddingEmbed = new MessageEmbed({
+      title: "Lots of pudding for everyone!",
+      image: { url: img},
+      color: BOT_COLOR
+    });
+
+    await msg.channel.send({ embeds: [puddingEmbed] });
   }
 };

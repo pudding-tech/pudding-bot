@@ -1,11 +1,12 @@
 import { CommandDefinition } from '../CommandDefinition';
 //import { MessageEmbed } from 'Discord.js';
 const { MessageEmbed } = require('discord.js');
-import { BOT_COLOR } from '../constants';
+import { BOT_COLOR, Category } from '../constants';
 
 export const git: CommandDefinition = {
   name: "git",
   description: "Link to PuddingBot git repo",
+  category: Category.LINK,
   executor: async (msg) => {
     const gitEmbed = new MessageEmbed({
       title: "PuddingBot Git Repository",

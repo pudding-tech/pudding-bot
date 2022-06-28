@@ -1,13 +1,13 @@
 import { CommandDefinition } from '../CommandDefinition';
 //import { MessageEmbed } from 'Discord.js';
 const { MessageEmbed } = require('discord.js');
-import { BOT_COLOR } from '../constants';
+import { BOT_COLOR, Category } from '../constants';
 
 const img = "https://c.tenor.com/lTtlX5xlfmgAAAAC/nyan-cat.gif"
 
 export const nyan: CommandDefinition = {
   name: "nyan",
-  description: "nyan nyan",
+  category: Category.IMAGES,
   executor: async (msg) => {
     const nyanEmbed = new MessageEmbed({
       title: "NYAN",

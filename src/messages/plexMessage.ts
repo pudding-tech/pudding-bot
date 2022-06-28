@@ -64,10 +64,7 @@ export const plexMessage = async (client: Discord.Client, serverStatus: Array<bo
       texts.duckflixSubtext = "*" + customStatus + "*";
       SData("duckflix", serverStatus[1]);
     }
-    console.log("puddingflix: " + SData("puddingflix"));
-    console.log("duckflix: " + SData("duckflix"));
-
-  }
+  };
 
   const setStatus = () => {
     if (serverStatus[0] === true && serverStatus[1] === true) {

@@ -51,13 +51,13 @@ export const editPlexMessage = async (bot: Discord.Client, msg: Discord.Message,
 
   if (server === "help") {
     const text = "Formatting for editing the Plex message in the services channel should be done in the following way:\n\n" +
-    "`.edit plex <server: string> <operational: number> \"<status: string>\"`\n\n" +
+    "`.edit plex <server> <operational> \"<custom status>\"`\n\n" +
     "*<server>* can be either puddingflix or duckflix\n" +
     "*<operational>* can be either 1 (online) or 0 (offline)\n" +
-    "*<status>* is optional, and used for writing a custom message for the server's status. " +
+    "*<custom status>* is optional, and used for writing a custom message for the server's status. " +
     "If nothing is supplied the default status for online and offline will be used. " +
-    "*<status>* should be encapsulated in \"\" (double quotes).\n\n" +
-    "Examples: `.edit plex puddingflix 0 \"Maintenance\"`, `.edit plex puddingflix 1`";
+    "*<custom status>* should be enclosed in \"\" (double quotes).\n\n" +
+    "Examples:\n`.edit plex puddingflix 0 \"Maintenance\"`\n`.edit plex puddingflix 1`";
     
     msg.channel.send(text);
     return;

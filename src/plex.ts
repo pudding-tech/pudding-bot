@@ -13,8 +13,7 @@ export const plexConnect = async (bot: Discord.Client) => {
     token: process.env.PUDDINGFLIX_TOKEN,
     options: {
       identifier: process.env.PLEX_CLIENT_IDENTIFIER,
-      deviceName: "PuddingBot",
-      version: "0.4"
+      deviceName: "PuddingBot"
     }
   });
 
@@ -25,8 +24,7 @@ export const plexConnect = async (bot: Discord.Client) => {
     token: process.env.DUCKFLIX_TOKEN,
     options: {
       identifier: process.env.PLEX_CLIENT_IDENTIFIER,
-      deviceName: "PuddingBot",
-      version: "0.4"
+      deviceName: "PuddingBot"
     }
   });
   
@@ -67,7 +65,6 @@ export const plexConnect = async (bot: Discord.Client) => {
       console.log("No plex status changes")
       return;
     }
-    //console.log("Puddingflix online: " + puddingflix + "\nDuckflix online: " + duckflix);
 
     plexMessage(bot, [puddingflix, duckflix]);
   };

@@ -1,11 +1,12 @@
 import { CommandDefinition } from '../CommandDefinition';
 //import { MessageEmbed } from 'Discord.js';
 const { MessageEmbed } = require('discord.js');
-import { BOT_COLOR } from '../constants';
+import { BOT_COLOR, Category } from '../constants';
 
 export const avatar: CommandDefinition = {
   name: "avatar",
   description: "Displays a user's avatar",
+  category: Category.UTIL,
   executor: async (msg) => {
 
     const user = msg.mentions.users.first() ||  msg.author;

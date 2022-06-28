@@ -1,10 +1,11 @@
 import { CommandDefinition } from '../CommandDefinition';
 const { MessageEmbed } = require('discord.js');
-import { BOT_COLOR } from '../constants';
+import { BOT_COLOR, Category } from '../constants';
 
 export const adventures: CommandDefinition = {
   name: "adventures",
   description: "Link to Adventures of the Puddings Youtube playlist",
+  category: Category.LINK,
   executor: async (msg) => {
     const adventuresEmbed = new MessageEmbed({
       title: "Adventures of the Puddings",

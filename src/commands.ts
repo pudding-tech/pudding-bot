@@ -6,13 +6,19 @@ import { pudding } from './commands/pudding';
 import { avatar } from './commands/avatar';
 import { adventures } from './commands/adventures';
 import { nyan } from './commands/nyan';
+import { what } from './commands/what';
+import { mordor } from './commands/mordor';
+import { edit } from './commands/edit';
 
 export const commands: CommandDefinition[] = [
-  help,
-  puddingtech,
-  git,
-  pudding,
-  avatar,
   adventures,
-  nyan
+  avatar,
+  edit,
+  git,
+  help,
+  mordor,
+  nyan,
+  pudding,
+  puddingtech,
+  what
 ];

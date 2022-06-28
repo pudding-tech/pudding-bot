@@ -1,5 +1,5 @@
 import Discord from 'discord.js';
-import { editPlexMessage } from './edits/editPlexMessage';
+import { editPlexMessage } from './editPlexMessage';
 
 /**
  * Handle .edit command
@@ -26,6 +26,6 @@ export const editMessage = async (bot: Discord.Client, msg: Discord.Message, tex
     return;
   }
 
-  msg.reply("Edit command not found.\n" +
+  msg.reply("Edit command not specified.\n" +
     "Use `.edit help` for a list of available edit commands.");
 };
