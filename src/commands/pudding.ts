@@ -1,9 +1,9 @@
-import { CommandDefinition } from '../CommandDefinition';
+import { CommandDefinition } from "../CommandDefinition";
 //import { MessageEmbed } from 'Discord.js';
-const { MessageEmbed } = require('discord.js');
-import { BOT_COLOR, Category } from '../constants';
+const { MessageEmbed } = require("discord.js");
+import { BOT_COLOR, Category } from "../constants";
 
-const img: string = "https://c.tenor.com/02c70YZ5A5IAAAAC/pudding.gif";
+const img = "https://c.tenor.com/02c70YZ5A5IAAAAC/pudding.gif";
 
 export const pudding: CommandDefinition = {
   name: "pudding",

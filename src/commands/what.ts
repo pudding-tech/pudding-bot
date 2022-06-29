@@ -1,8 +1,8 @@
-import { CommandDefinition } from '../CommandDefinition';
-const { MessageEmbed } = require('discord.js');
-import { BOT_COLOR, Category } from '../constants';
+import { CommandDefinition } from "../CommandDefinition";
+const { MessageEmbed } = require("discord.js");
+import { BOT_COLOR, Category } from "../constants";
 
-const img = "https://i.imgur.com/wAtmxTe.gif"
+const img = "https://i.imgur.com/wAtmxTe.gif";
 
 export const what: CommandDefinition = {
   name: "what",

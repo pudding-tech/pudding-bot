@@ -1,11 +1,11 @@
-import Discord, { MessageEmbed } from 'discord.js';
-import { BOT_COLOR, Channels } from '../constants';
-const SData = require('simple-data-storage');
+import Discord, { MessageEmbed } from "discord.js";
+import { BOT_COLOR, Channels } from "../constants";
+const SData = require("simple-data-storage");
 
 /**
  * Create or edit Plex message in services Discord channel
  * @param {Discord.Client} client Discord bot
- * @param {Array<boolean>} serverStatus Message object itself, used for sending messages
+ * @param {Array<boolean>} serverStatus Operational status for the servers
  * @param {string} [customStatus] Optional custom server status message
  */
 export const plexMessage = async (client: Discord.Client, serverStatus: Array<boolean>, customStatus?: string) => {
@@ -110,10 +110,10 @@ export const plexMessage = async (client: Discord.Client, serverStatus: Array<bo
     // Update server status saved cache
     SData("puddingflix", serverStatus[0]);
     SData("duckflix", serverStatus[1]);
-  }
+  };
 };
 
-let texts = {
+const texts = {
   puddingflixHeader: "",
   puddingflixSubtext: "",
   duckflixHeader: "",
@@ -146,5 +146,5 @@ const plexStatusMsg = (puddingflixHeader: string, puddingflixSub: string, duckfl
       }
     ],
     color: BOT_COLOR
-  }
-)};
+  });
+};

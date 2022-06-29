@@ -1,7 +1,7 @@
-import { CommandDefinition } from '../CommandDefinition';
+import { CommandDefinition } from "../CommandDefinition";
 //import { MessageEmbed } from 'Discord.js';
-const { MessageEmbed } = require('discord.js');
-import { BOT_COLOR, Category } from '../constants';
+const { MessageEmbed } = require("discord.js");
+import { BOT_COLOR, Category } from "../constants";
 
 export const puddingtech: CommandDefinition = {
   name: "puddingtech",

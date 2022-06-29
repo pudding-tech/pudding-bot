@@ -1,5 +1,5 @@
-import Discord from 'discord.js';
-import { plexMessage } from '../plexMessage';
+import Discord from "discord.js";
+import { plexMessage } from "../plexMessage";
 
 /**
  * Edit Plex message in services channel
@@ -29,7 +29,7 @@ export const editPlexMessage = async (bot: Discord.Client, msg: Discord.Message,
         serverSelect = [null, status];
       }
 
-      const customStatus = text.split('"')[1] || "";
+      const customStatus = text.split("\"")[1] || "";
 
       // Check permissions
       const author = msg.author.id;

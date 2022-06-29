@@ -1,8 +1,8 @@
-import { CommandDefinition } from '../CommandDefinition';
+import { CommandDefinition } from "../CommandDefinition";
 //import { MessageEmbed } from 'Discord.js';
-const { MessageEmbed } = require('discord.js');
-import { commands } from '../commands';
-import { BOT_COLOR, Category } from '../constants';
+const { MessageEmbed } = require("discord.js");
+import { commands } from "../commands";
+import { BOT_COLOR, Category } from "../constants";
 
 export const help: CommandDefinition = {
   name: "help",
@@ -11,10 +11,10 @@ export const help: CommandDefinition = {
   executor: async (msg) => {
 
     // Build strings of available commands
-    let linkCommands: string = "";
-    let funnyCommands: string = "";
-    let utilCommands: string = "";
-    let adminCommands: string = "";
+    let linkCommands = "";
+    let funnyCommands = "";
+    let utilCommands = "";
+    let adminCommands = "";
 
     commands.forEach( cmd => {
       switch (cmd.category) {
@@ -61,7 +61,7 @@ export const help: CommandDefinition = {
         }
       ],
       color: BOT_COLOR,
-      footer: { text: 'Contact mods if you have further questions' },
+      footer: { text: "Contact mods if you have further questions" },
     });
 
     await msg.channel.send({ embeds: [helpEmbed] });

@@ -1,9 +1,9 @@
-import { CommandDefinition } from '../CommandDefinition';
+import { CommandDefinition } from "../CommandDefinition";
 //import { MessageEmbed } from 'Discord.js';
-const { MessageEmbed } = require('discord.js');
-import { BOT_COLOR, Category } from '../constants';
+const { MessageEmbed } = require("discord.js");
+import { BOT_COLOR, Category } from "../constants";
 
-const img = "https://c.tenor.com/lTtlX5xlfmgAAAAC/nyan-cat.gif"
+const img = "https://c.tenor.com/lTtlX5xlfmgAAAAC/nyan-cat.gif";
 
 export const nyan: CommandDefinition = {
   name: "nyan",
@@ -16,7 +16,7 @@ export const nyan: CommandDefinition = {
         + "nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan nyan",
       image: { url: img},
       color: BOT_COLOR,
-      footer: { text: 'nyannyannyannyannyannyannyannyannyannyannyannyannyannyannyannyan' },
+      footer: { text: "nyannyannyannyannyannyannyannyannyannyannyannyannyannyannyannyan" },
     });
 
     await msg.channel.send({ embeds: [nyanEmbed] });

@@ -1,5 +1,5 @@
-import Discord from 'discord.js';
-import { editPlexMessage } from './editPlexMessage';
+import Discord from "discord.js";
+import { editPlexMessage } from "./editPlexMessage";
 
 /**
  * Handle .edit command

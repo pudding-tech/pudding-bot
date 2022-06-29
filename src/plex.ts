@@ -1,13 +1,13 @@
-import Discord from 'discord.js';
-import { plexMessage } from './messages/plexMessage';
-const PlexAPI = require('plex-api');
-const cron = require('node-cron');
-const SData = require('simple-data-storage');
+import Discord from "discord.js";
+import { plexMessage } from "./messages/plexMessage";
+const PlexAPI = require("plex-api");
+const cron = require("node-cron");
+const SData = require("simple-data-storage");
 
 export const plexConnect = async (bot: Discord.Client) => {
 
   // Connect to Puddingflix
-  let plexClientPuddingflix = new PlexAPI({
+  const plexClientPuddingflix = new PlexAPI({
     hostname: process.env.PUDDINGFLIX_IP,
     port: process.env.PUDDINGFLIX_PORT,
     token: process.env.PUDDINGFLIX_TOKEN,
@@ -18,7 +18,7 @@ export const plexConnect = async (bot: Discord.Client) => {
   });
 
   // Connect to Duckflix
-  let plexClientDuckflix = new PlexAPI({
+  const plexClientDuckflix = new PlexAPI({
     hostname: process.env.DUCKFLIX_IP,
     port: process.env.DUCKFLIX_PORT,
     token: process.env.DUCKFLIX_TOKEN,
@@ -28,8 +28,8 @@ export const plexConnect = async (bot: Discord.Client) => {
     }
   });
   
-  let puddingflix: boolean = false;
-  let duckflix: boolean = false;
+  let puddingflix = false;
+  let duckflix = false;
   let puddingflixLastValue: boolean;
   let duckflixLastValue: boolean;
 
@@ -37,7 +37,7 @@ export const plexConnect = async (bot: Discord.Client) => {
 
     // Check if Puddingflix is online
     try {
-      let result = await plexClientPuddingflix.query("/") 
+      const result = await plexClientPuddingflix.query("/");
       console.log("Plex Media Server '" + result.MediaContainer.friendlyName + "' is running, version " + result.MediaContainer.version);
       puddingflix = true;
     }
@@ -48,7 +48,7 @@ export const plexConnect = async (bot: Discord.Client) => {
 
     // Check if Duckflix is online
     try {
-      let result = await plexClientDuckflix.query("/") 
+      const result = await plexClientDuckflix.query("/");
       console.log("Plex Media Server '" + result.MediaContainer.friendlyName + "' is running, version " + result.MediaContainer.version);
       duckflix = true;
     }
@@ -62,7 +62,7 @@ export const plexConnect = async (bot: Discord.Client) => {
 
     // Do not send edit request if status has not changed
     if (puddingflix === puddingflixLastValue && duckflix === duckflixLastValue) {
-      console.log("No plex status changes")
+      console.log("No plex status changes");
       return;
     }
 
@@ -72,7 +72,7 @@ export const plexConnect = async (bot: Discord.Client) => {
   await serversCheck();
 
   // Run check every hour
-  cron.schedule('0 * * * *', async () => {
+  cron.schedule("0 * * * *", async () => {
     await serversCheck();
   });
 };
