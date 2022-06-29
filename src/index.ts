@@ -2,7 +2,6 @@ import Discord from 'discord.js';
 import dotenv from 'dotenv';
 import { commands } from './commands';
 import { CMD_PREFIX } from './constants';
-import { editMessage } from './messages/edits/editMessage';
 import { plexConnect } from './plex';
 
 dotenv.config();
