@@ -19,16 +19,16 @@ export const help: CommandDefinition = {
     commands.forEach( cmd => {
       switch (cmd.category) {
         case Category.LINK:
-          linkCommands += `\`.${cmd.name}\`\n`;
+          linkCommands += `\`.${cmd.commandDisplay || cmd.name}\`\n`;
           break;
         case Category.IMAGES:
-          funnyCommands += `\`.${cmd.name}\`\n`;
+          funnyCommands += `\`.${cmd.commandDisplay || cmd.name}\`\n`;
           break;
         case Category.UTIL:
-          utilCommands += `\`.${cmd.name}\`\n`;
+          utilCommands += `\`.${cmd.commandDisplay || cmd.name}\`\n`;
           break;
         case Category.ADMIN:
-          adminCommands += `\`.${cmd.name}\`\n`;
+          adminCommands += `\`.${cmd.commandDisplay || cmd.name}\`\n`;
           break;
       }
     });

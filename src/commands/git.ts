@@ -11,7 +11,7 @@ export const git: CommandDefinition = {
     const gitEmbed = new MessageEmbed({
       title: "PuddingBot Git Repository",
       url: "https://github.com/Pudding-Tech/PuddingBot",
-      description: "Click to go to PuddingBot repository on Github. For now only accessible for members of Puddingtech organization.",
+      description: "Click to go to PuddingBot repository on Github. For now only accessible for members of the Puddingtech organization.",
       color: BOT_COLOR,
       footer: { text: "Feel free to contribute to the bot!" }
     });

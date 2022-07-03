@@ -9,5 +9,5 @@ export enum Category {
   LINK = "Links",
   IMAGES = "Images and GIFs",
   UTIL = "Utilities",
-  ADMIN = "Admin"
+  ADMIN = "Admin commands"
 }

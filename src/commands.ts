@@ -9,6 +9,7 @@ import { nyan } from "./commands/nyan";
 import { what } from "./commands/what";
 import { mordor } from "./commands/mordor";
 import { edit } from "./commands/edit";
+import { pots } from "./commands/pots";
 
 export const commands: CommandDefinition[] = [
   adventures,
@@ -18,6 +19,7 @@ export const commands: CommandDefinition[] = [
   help,
   mordor,
   nyan,
+  pots,
   pudding,
   puddingtech,
   what

@@ -5,6 +5,7 @@ import { editMessage } from "../messages/edits/editMessage";
 export const edit: CommandDefinition = {
   name: "edit",
   description: "Edit a message in a Discord channel",
+  commandDisplay: "edit <...>",
   category: Category.ADMIN,
   executor: async (msg, bot) => {
     await editMessage(bot, msg, msg.content.substring(6, msg.content.length));

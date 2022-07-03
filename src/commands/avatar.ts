@@ -6,6 +6,7 @@ import { BOT_COLOR, Category } from "../constants";
 export const avatar: CommandDefinition = {
   name: "avatar",
   description: "Displays a user's avatar",
+  commandDisplay: "avatar <user>",
   category: Category.UTIL,
   executor: async (msg) => {
 
