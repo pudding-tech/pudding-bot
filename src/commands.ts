@@ -10,6 +10,14 @@ import { what } from "./commands/what";
 import { mordor } from "./commands/mordor";
 import { edit } from "./commands/edit";
 import { pots } from "./commands/pots";
+import { play } from "./commands/audio/play";
+import { stop } from "./commands/audio/stop";
+import { queue } from "./commands/audio/queue";
+import { pause } from "./commands/audio/pause";
+import { resume } from "./commands/audio/resume";
+import { vol } from "./commands/audio/vol";
+import { skip } from "./commands/audio/skip";
+import { shuffle } from "./commands/audio/shuffle";
 
 export const commands: CommandDefinition[] = [
   adventures,
@@ -19,8 +27,16 @@ export const commands: CommandDefinition[] = [
   help,
   mordor,
   nyan,
+  pause,
+  play,
   pots,
   pudding,
   puddingtech,
+  queue,
+  resume,
+  shuffle,
+  skip,
+  stop,
+  vol,
   what
 ];
