@@ -15,17 +15,15 @@ export const editMessage = async (bot: Discord.Client, msg: Discord.Message, tex
 
   // Show available .edit commands
   if (cmd === "help") {
-    msg.reply("These are the available commands for editing messages:\n\n" +
+    return msg.reply("These are the available commands for editing messages:\n\n" +
     "`.edit plex <...>`   -   This command is only usable for Plex admins");
-    return;
   }
 
   // Edit Plex server status
   if (cmd === "plex") {
-    editPlexMessage(bot, msg, text);
-    return;
+    return editPlexMessage(bot, msg, text);
   }
 
-  msg.reply("Edit command not specified.\n" +
+  return msg.reply("Edit command not specified.\n" +
     "Use `.edit help` for a list of available edit commands.");
 };

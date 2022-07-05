@@ -8,6 +8,6 @@ export const edit: CommandDefinition = {
   commandDisplay: "edit <...>",
   category: Category.ADMIN,
   executor: async (msg, bot) => {
-    await editMessage(bot, msg, msg.content.substring(6, msg.content.length));
+    return editMessage(bot, msg, msg.content.substring(6, msg.content.length));
   }
 };

@@ -18,11 +18,13 @@ import { resume } from "./commands/audio/resume";
 import { vol } from "./commands/audio/vol";
 import { skip } from "./commands/audio/skip";
 import { shuffle } from "./commands/audio/shuffle";
+import { filter } from "./commands/audio/filter";
 
 export const commands: CommandDefinition[] = [
   adventures,
   avatar,
   edit,
+  filter,
   git,
   help,
   mordor,

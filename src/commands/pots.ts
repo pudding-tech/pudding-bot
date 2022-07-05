@@ -1,3 +1,4 @@
+import { Message } from "discord.js";
 import { CommandDefinition } from "../CommandDefinition";
 const { MessageEmbed } = require("discord.js");
 import { BOT_COLOR, Category } from "../constants";
@@ -14,7 +15,7 @@ export const pots: CommandDefinition = {
       color: BOT_COLOR
     });
 
-    await msg.channel.send({ embeds: [potsEmbed] });
+    return msg.channel.send({ embeds: [potsEmbed] });
   }
 };
 

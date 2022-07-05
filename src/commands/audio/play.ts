@@ -17,23 +17,20 @@ export const play: CommandDefinition = {
     // Check if user is in voice channel as bot
     const voiceChannel = msg.member?.voice.channel;
     if (!voiceChannel) {
-      msg.reply("You need to be in a voice channel to use this command.");
-      return;
+      return msg.reply("You need to be in a voice channel to use this command.");
     }
     if (msg.guild?.me?.voice.channelId && voiceChannel.id !== msg.guild?.me?.voice.channelId) {
-      msg.reply("You are not in the same voice channel as PuddingBot.");
+      return msg.reply("You are not in the same voice channel as PuddingBot.");
     }
 
     // Check command includes music link
     const url = msg.content.substring(6, msg.content.length);
     if (!url.length) {
-      msg.reply("You need to add a music link.");
-      return;
+      return msg.reply("You need to add a music link.");
     }
     
     // Create queue
     const queue = player.createQueue(msg.guild, {
-      metadata: msg.channel,
       autoSelfDeaf: false,
       initialVolume: 50
     });
@@ -45,8 +42,7 @@ export const play: CommandDefinition = {
     catch (err) {
       queue.destroy();
       console.log(err);
-      msg.reply("Could not connect to voice channel. See bot error log");
-      return;
+      return msg.reply("Could not connect to voice channel. See bot error log");
     }
 
     const result = await player.search(url, {
@@ -54,8 +50,7 @@ export const play: CommandDefinition = {
       searchEngine: QueryType.YOUTUBE_VIDEO
     });
     if (result.tracks.length === 0) {
-      msg.reply("Video not found. Please provide a proper Youtube URL.");
-      return;
+      return msg.reply("Video not found. Please provide a proper Youtube URL.");
     }
 
     const song = result.tracks[0];
@@ -76,6 +71,6 @@ export const play: CommandDefinition = {
       color: BOT_COLOR
     });
 
-    await msg.channel.send({ embeds: [musicEmbed] });
+    return msg.channel.send({ embeds: [musicEmbed] });
   }
 };

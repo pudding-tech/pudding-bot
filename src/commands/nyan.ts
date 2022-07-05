@@ -19,6 +19,6 @@ export const nyan: CommandDefinition = {
       footer: { text: "nyannyannyannyannyannyannyannyannyannyannyannyannyannyannyannyan" },
     });
 
-    await msg.channel.send({ embeds: [nyanEmbed] });
+    return msg.channel.send({ embeds: [nyanEmbed] });
   }
 };

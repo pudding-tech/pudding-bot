@@ -13,6 +13,6 @@ export const what: CommandDefinition = {
       color: BOT_COLOR
     });
 
-    await msg.channel.send({ embeds: [whatEmbed] });
+    return msg.channel.send({ embeds: [whatEmbed] });
   }
 };

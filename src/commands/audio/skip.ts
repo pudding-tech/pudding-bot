@@ -14,15 +14,14 @@ export const skip: CommandDefinition = {
 
     const queue = player.getQueue(msg.guildId);
     if (!queue) {
-      msg.reply("There are no songs in the queue.");
-      return;
+      return msg.reply("There are no songs in the queue.");
     }
 
     const currentSong = queue.current;
 
     queue.skip();
 
-    const infoEmbed = new MessageEmbed({
+    const skipEmbed = new MessageEmbed({
       description: `**${currentSong.title}** has been skipped.`,
       thumbnail: {
         url: currentSong.thumbnail
@@ -30,6 +29,6 @@ export const skip: CommandDefinition = {
       color: BOT_COLOR
     });
 
-    await msg.channel.send({ embeds: [infoEmbed] });
+    return msg.channel.send({ embeds: [skipEmbed] });
   }
 };

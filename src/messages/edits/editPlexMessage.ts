@@ -34,18 +34,17 @@ export const editPlexMessage = async (bot: Discord.Client, msg: Discord.Message,
       // Check permissions
       const author = msg.author.id;
       if (author !== "110276423779897344" && author !== "111967042424274944") {
-        msg.reply("You do not have permissions to change the Plex services message");
-        return;
+        return msg.reply("You do not have permissions to change the Plex services message");
       }
       
       try {
         await plexMessage(bot, serverSelect, customStatus);
+        return await msg.reply("You have successfully editited the Plex services message");
       }
       catch (e) {
         console.log(e);
+        return;
       }
-      msg.reply("You have successfully editited the Plex services message");
-      return;
     }
   }
 
@@ -59,10 +58,9 @@ export const editPlexMessage = async (bot: Discord.Client, msg: Discord.Message,
     "*<custom status>* should be enclosed in \"\" (double quotes).\n\n" +
     "Examples:\n`.edit plex puddingflix 0 \"Maintenance\"`\n`.edit plex puddingflix 1`";
     
-    msg.channel.send(text);
-    return;
+    return msg.channel.send(text);
   }
 
-  msg.reply("Wrong formatting for edit Plex command.\n" +
+  return msg.reply("Wrong formatting for edit Plex command.\n" +
     "Use `.edit plex help` for help formatting for Plex.");
 };

@@ -16,6 +16,6 @@ export const git: CommandDefinition = {
       footer: { text: "Feel free to contribute to the bot!" }
     });
 
-    await msg.channel.send({ embeds: [gitEmbed] });
+    return msg.channel.send({ embeds: [gitEmbed] });
   }
 };

@@ -13,12 +13,11 @@ export const pause: CommandDefinition = {
 
     const queue = player.getQueue(msg.guildId);
     if (!queue) {
-      msg.reply("There are no songs in the queue.");
-      return;
+      return msg.reply("There are no songs in the queue.");
     }
 
     queue.setPaused(true);
 
-    await msg.channel.send("Music has been paused! Use .resume to continue playing the music.");
+    return msg.channel.send("Music has been paused! Use .resume to continue playing the music.");
   }
 };

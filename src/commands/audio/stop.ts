@@ -13,12 +13,11 @@ export const stop: CommandDefinition = {
 
     const queue = player.getQueue(msg.guildId);
     if (!queue) {
-      msg.reply("There are no songs in the queue.");
-      return;
+      return msg.reply("There are no songs in the queue.");
     }
 
     queue.destroy();
 
-    await msg.channel.send("Music has been stopped. See you later!");
+    return msg.channel.send("Music has been stopped. See you later!");
   }
 };

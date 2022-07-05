@@ -14,8 +14,7 @@ export const queue: CommandDefinition = {
 
     const queue = player.getQueue(msg.guildId);
     if (!queue) {
-      msg.reply("There are no songs in the queue.");
-      return;
+      return msg.reply("There are no songs in the queue.");
     }
 
     let queueString = queue.tracks.map( (song, i) => {
@@ -29,7 +28,8 @@ export const queue: CommandDefinition = {
     const currentSong = queue.current;
     const progressBar = queue.createProgressBar({
       timecodes: true,
-      length: 20
+      length: 10,
+      indicator: ":white_square_button:"
     });
 
     const queueEmbed = new MessageEmbed({
@@ -44,6 +44,6 @@ export const queue: CommandDefinition = {
       color: BOT_COLOR
     });
 
-    await msg.channel.send({ embeds: [queueEmbed] });
+    return msg.channel.send({ embeds: [queueEmbed] });
   }
 };

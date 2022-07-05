@@ -15,6 +15,6 @@ export const puddingtech: CommandDefinition = {
       color: BOT_COLOR
     });
 
-    await msg.channel.send({ embeds: [puddingtechEmbed] });
+    return msg.channel.send({ embeds: [puddingtechEmbed] });
   }
 };

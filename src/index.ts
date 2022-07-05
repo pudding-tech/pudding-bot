@@ -49,12 +49,12 @@ bot.on("messageCreate", async (msg) => {
     if (command) {
       console.log(`Command "${command.name}" used by ${msg.author.tag}`);
       try {
-        if (command.category === Category.AUDIO) {
-          await command.executor(msg, bot, player);
-        }
-        else {
-          await command.executor(msg, bot);
-        }
+        //if (command.category === Category.AUDIO) {
+        await command.executor(msg, bot, player);
+        //}
+        //else {
+          //await command.executor(msg, bot);
+        //}
       }
       catch (e) {
         console.log("Error executing command");

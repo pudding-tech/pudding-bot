@@ -13,12 +13,11 @@ export const shuffle: CommandDefinition = {
 
     const queue = player.getQueue(msg.guildId);
     if (!queue) {
-      msg.reply("There are no songs in the queue.");
-      return;
+      return msg.reply("There are no songs in the queue.");
     }
 
     queue.shuffle();
 
-    msg.channel.send(queue.tracks.length + " songs have been shuffled.");
+    return msg.channel.send(queue.tracks.length + " songs have been shuffled.");
   }
 };
