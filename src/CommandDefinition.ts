@@ -1,4 +1,5 @@
 import Discord from "discord.js";
+import { Player } from "discord-player";
 import { Category } from "./constants";
 
 export interface CommandDefinition {
@@ -7,5 +8,5 @@ export interface CommandDefinition {
   category: Category,
   commandDisplay?: string,
   requiredPermissions?: Discord.PermissionString[],
-  executor: (msg: Discord.Message, client: Discord.Client) => Promise<unknown>
+  executor: (msg: Discord.Message, client: Discord.Client, player?: Player) => Promise<unknown>
 }

@@ -1,7 +1,8 @@
 import Discord from "discord.js";
+import { Player } from "discord-player";
 import dotenv from "dotenv";
 import { commands } from "./commands";
-import { CMD_PREFIX } from "./constants";
+import { Category, CMD_PREFIX } from "./constants";
 import { plexConnect } from "./plex";
 
 dotenv.config();
@@ -48,7 +49,12 @@ bot.on("messageCreate", async (msg) => {
     if (command) {
       console.log(`Command "${command.name}" used by ${msg.author.tag}`);
       try {
-        await command.executor(msg, bot);
+        //if (command.category === Category.AUDIO) {
+        await command.executor(msg, bot, player);
+        //}
+        //else {
+          //await command.executor(msg, bot);
+        //}
       }
       catch (e) {
         console.log("Error executing command");
@@ -59,6 +65,14 @@ bot.on("messageCreate", async (msg) => {
       msg.reply("Command does not exist.\n" +
         "Use `.help` for a list of available commands.");
     }
+  }
+});
+
+// Music player
+const player = new Player(bot, {
+  ytdlOptions: {
+    quality: "highestaudio",
+    highWaterMark: 1 << 25
   }
 });
 

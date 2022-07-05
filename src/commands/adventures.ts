@@ -14,6 +14,6 @@ export const adventures: CommandDefinition = {
       color: BOT_COLOR
     });
 
-    await msg.channel.send({ embeds: [adventuresEmbed] });
+    return msg.channel.send({ embeds: [adventuresEmbed] });
   }
 };

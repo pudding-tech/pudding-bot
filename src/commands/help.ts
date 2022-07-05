@@ -7,13 +7,14 @@ import { BOT_COLOR, Category } from "../constants";
 export const help: CommandDefinition = {
   name: "help",
   description: "Help for PuddingBot",
-  category: Category.UTIL,
+  category: Category.HELP,
   executor: async (msg) => {
 
     // Build strings of available commands
     let linkCommands = "";
-    let funnyCommands = "";
+    let imagesCommands = "";
     let utilCommands = "";
+    let audioCommands = "";
     let adminCommands = "";
 
     commands.forEach( cmd => {
@@ -22,18 +23,19 @@ export const help: CommandDefinition = {
           linkCommands += `\`.${cmd.commandDisplay || cmd.name}\`\n`;
           break;
         case Category.IMAGES:
-          funnyCommands += `\`.${cmd.commandDisplay || cmd.name}\`\n`;
+          imagesCommands += `\`.${cmd.commandDisplay || cmd.name}\`\n`;
           break;
         case Category.UTIL:
           utilCommands += `\`.${cmd.commandDisplay || cmd.name}\`\n`;
+          break;
+        case Category.AUDIO:
+          audioCommands += `\`.${cmd.commandDisplay || cmd.name}\`\n`;
           break;
         case Category.ADMIN:
           adminCommands += `\`.${cmd.commandDisplay || cmd.name}\`\n`;
           break;
       }
     });
-
-    utilCommands = utilCommands.replace("\`.help\`\n", "");
 
     const helpEmbed = new MessageEmbed({
       title: "PuddingBot  -  Help",
@@ -46,12 +48,17 @@ export const help: CommandDefinition = {
         },
         {
           name: `${Category.IMAGES}:`,
-          value: funnyCommands,
+          value: imagesCommands,
           inline: false
         },
         {
           name: `${Category.UTIL}:`,
           value: utilCommands,
+          inline: false
+        },
+        {
+          name: `${Category.AUDIO}:`,
+          value: audioCommands,
           inline: false
         },
         {
@@ -64,6 +71,6 @@ export const help: CommandDefinition = {
       footer: { text: "Contact mods if you have further questions" },
     });
 
-    await msg.channel.send({ embeds: [helpEmbed] });
+    return msg.channel.send({ embeds: [helpEmbed] });
   }
 };

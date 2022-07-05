@@ -14,6 +14,6 @@ export const mordor: CommandDefinition = {
       color: BOT_COLOR
     });
 
-    await msg.channel.send({ embeds: [mordorEmbed] });
+    return msg.channel.send({ embeds: [mordorEmbed] });
   }
 };

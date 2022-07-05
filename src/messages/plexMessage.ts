@@ -31,10 +31,11 @@ export const plexMessage = async (client: Discord.Client, serverStatus: Array<bo
             else {
               setStatusCustom();
             }
-            await message[1].edit({ embeds: [plexStatusMsg(texts.puddingflixHeader, texts.puddingflixSubtext, texts.duckflixHeader, texts.duckflixSubtext)] });
+            return await message[1].edit({ embeds: [plexStatusMsg(texts.puddingflixHeader, texts.puddingflixSubtext, texts.duckflixHeader, texts.duckflixSubtext)] });
           }
           catch (e) {
             console.log(e);
+            return;
           }
         }
       }
