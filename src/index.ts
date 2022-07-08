@@ -2,7 +2,7 @@ import Discord from "discord.js";
 import { Player } from "discord-player";
 import dotenv from "dotenv";
 import { commands } from "./commands";
-import { Category, CMD_PREFIX } from "./constants";
+import { CMD_PREFIX } from "./constants";
 import { plexConnect } from "./plex";
 
 dotenv.config();
@@ -49,12 +49,7 @@ bot.on("messageCreate", async (msg) => {
     if (command) {
       console.log(`Command "${command.name}" used by ${msg.author.tag}`);
       try {
-        //if (command.category === Category.AUDIO) {
         await command.executor(msg, bot, player);
-        //}
-        //else {
-          //await command.executor(msg, bot);
-        //}
       }
       catch (e) {
         console.log("Error executing command");

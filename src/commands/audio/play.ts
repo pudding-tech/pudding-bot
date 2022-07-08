@@ -14,7 +14,7 @@ export const play: CommandDefinition = {
       return;
     }
 
-    // Check if user is in voice channel as bot
+    // Check if user is in same voice channel as bot
     const voiceChannel = msg.member?.voice.channel;
     if (!voiceChannel) {
       return msg.reply("You need to be in a voice channel to use this command.");
@@ -23,10 +23,10 @@ export const play: CommandDefinition = {
       return msg.reply("You are not in the same voice channel as PuddingBot.");
     }
 
-    // Check command includes music link
+    // Check if command includes music link
     const url = msg.content.substring(6, msg.content.length);
     if (!url.length) {
-      return msg.reply("You need to add a music link.");
+      return msg.reply("Please provide a link for the music to play. YouTube, Spotify and SoundCloud are supported.");
     }
     
     // Create queue
