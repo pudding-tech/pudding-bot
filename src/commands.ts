@@ -19,6 +19,7 @@ import { vol } from "./commands/audio/vol";
 import { skip } from "./commands/audio/skip";
 import { shuffle } from "./commands/audio/shuffle";
 import { filter } from "./commands/audio/filter";
+import { transcode } from "./commands/transcode";
 
 export const commands: CommandDefinition[] = [
   adventures,
@@ -39,6 +40,7 @@ export const commands: CommandDefinition[] = [
   shuffle,
   skip,
   stop,
+  transcode,
   vol,
   what
 ];
