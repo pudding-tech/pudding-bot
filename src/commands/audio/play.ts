@@ -1,36 +1,47 @@
+import { Constants } from "discord.js";
 import { CommandDefinition } from "../../CommandDefinition";
-const { MessageEmbed } = require("discord.js");
+import { MessageEmbed } from "discord.js";
 import { QueryType } from "discord-player";
 import { BOT_COLOR, Category } from "../../constants";
 
 export const play: CommandDefinition = {
   name: "play",
-  description: "Play audio from a Youtube video",
+  description: "Play audio from a YouTube, Spotify or SoundCloud link",
   commandDisplay: "play <url>",
   category: Category.AUDIO,
-  executor: async (msg, bot, player) => {
+  options: [
+    {
+      name: "url",
+      description: "URL to music",
+      required: true,
+      type: Constants.ApplicationCommandOptionTypes.STRING
+    }
+  ],
+  executor: async (interaction, bot, player) => {
 
-    if (!player || !msg.guild) {
+    if (!player || !interaction.guild) {
       return;
     }
 
     // Check if user is in same voice channel as bot
-    const voiceChannel = msg.member?.voice.channel;
+    const guild = bot.guilds.cache.get(interaction.guildId!);
+    const member = guild?.members.cache.get(interaction.member!.user.id!);
+    const voiceChannel = member?.voice.channel;
     if (!voiceChannel) {
-      return msg.reply("You need to be in a voice channel to use this command.");
+      return interaction.reply({ content: "You need to be in a voice channel to use this command.", ephemeral: true });
     }
-    if (msg.guild?.me?.voice.channelId && voiceChannel.id !== msg.guild?.me?.voice.channelId) {
-      return msg.reply("You are not in the same voice channel as PuddingBot.");
+    if (interaction.guild?.me?.voice.channelId && voiceChannel.id !== interaction.guild?.me?.voice.channelId) {
+      return interaction.reply({ content: "You are not in the same voice channel as PuddingBot.", ephemeral: true });
     }
 
     // Check if command includes music link
-    const url = msg.content.substring(6, msg.content.length);
-    if (!url.length) {
-      return msg.reply("Please provide a link for the music to play. YouTube, Spotify and SoundCloud are supported.");
+    const url = interaction.options.getString("url");
+    if (!url?.length) {
+      return interaction.reply({ content: "Please provide a link for the music to play. YouTube, Spotify and SoundCloud are supported.", ephemeral: true });
     }
     
     // Create queue
-    const queue = player.createQueue(msg.guild, {
+    const queue = player.createQueue(interaction.guild, {
       autoSelfDeaf: false,
       initialVolume: 50
     });
@@ -42,15 +53,15 @@ export const play: CommandDefinition = {
     catch (err) {
       queue.destroy();
       console.log(err);
-      return msg.reply("Could not connect to voice channel. See bot error log");
+      return interaction.reply({ content: "Could not connect to voice channel. See bot error log", ephemeral: true });
     }
 
     const result = await player.search(url, {
-      requestedBy: msg.author,
+      requestedBy: interaction.user,
       searchEngine: QueryType.YOUTUBE_VIDEO
     });
     if (result.tracks.length === 0) {
-      return msg.reply("Video not found. Please provide a proper Youtube URL.");
+      return interaction.reply({ content: "Video not found. Please provide a proper Youtube URL.", ephemeral: true });
     }
 
     const song = result.tracks[0];
@@ -71,6 +82,6 @@ export const play: CommandDefinition = {
       color: BOT_COLOR
     });
 
-    return msg.channel.send({ embeds: [musicEmbed] });
+    return interaction.reply({ embeds: [musicEmbed] });
   }
 };

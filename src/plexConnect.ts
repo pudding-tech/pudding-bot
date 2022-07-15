@@ -6,6 +6,15 @@ const SData = require("simple-data-storage");
 
 export const plexConnect = async (bot: Discord.Client) => {
 
+  if (!process.env.PUDDINGFLIX_IP || !process.env.PUDDINGFLIX_PORT || !process.env.PUDDINGFLIX_TOKEN || !process.env.PLEX_CLIENT_IDENTIFIER) {
+    console.log("Missing Puddingflix environment variables. Will not attempt to connect to Plex services.");
+    return;
+  }
+  if (!process.env.DUCKFLIX_IP || !process.env.DUCKFLIX_PORT || !process.env.DUCKFLIX_TOKEN || !process.env.PLEX_CLIENT_IDENTIFIER) {
+    console.log("Missing Duckflix environment variables. Will not attempt to connect to Plex services.");
+    return;
+  }
+
   // Connect to Puddingflix
   const plexClientPuddingflix = new PlexAPI({
     hostname: process.env.PUDDINGFLIX_IP,

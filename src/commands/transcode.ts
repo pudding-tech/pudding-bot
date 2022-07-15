@@ -10,7 +10,7 @@ export const transcode: CommandDefinition = {
     name: "transcode",
     description: "Instructions for enabling original quality in Plex",
     category: Category.IMAGES,
-    executor: async (msg) => {
+    executor: async (interaction) => {
         const embeds: MessageEmbed[] = [];
 
         embeds.push(new MessageEmbed({
@@ -26,11 +26,10 @@ export const transcode: CommandDefinition = {
         }));
 
         embeds.push(new MessageEmbed({
-            title: "Only you can prevent transcoding",
             image: { url: onlyYou },
             color: BOT_COLOR,
         }));
 
-        return msg.channel.send({ embeds: embeds });
+        return interaction.reply({ embeds: embeds });
     }
 };

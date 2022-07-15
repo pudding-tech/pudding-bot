@@ -1,3 +1,4 @@
+import { Constants } from "discord.js";
 import { CommandDefinition } from "../../CommandDefinition";
 import { Category } from "../../constants";
 const SData = require("simple-data-storage");
@@ -7,25 +8,49 @@ export const filter: CommandDefinition = {
   description: "Enable, disable, or list music filters",
   commandDisplay: "filter <name>? <on/off>?",
   category: Category.AUDIO,
-  executor: async (msg, bot, player) => {
+  options: [
+    {
+      name: "name",
+      description: "Name of filter",
+      required: false,
+      type: Constants.ApplicationCommandOptionTypes.STRING,
+      choices: [{ name: "nightcore",  value: "nightcore"},
+                { name: "vaporwave", value: "vaporwave" },
+                { name: "reverse", value: "reverse" },
+                { name: "karaoke", value: "karaoke" },
+                { name: "tremolo", value: "tremolo" },
+                { name: "gate", value: "gate" }]
+    },
+    {
+      name: "toggle",
+      description: "Enable or disable filter",
+      required: false,
+      type: Constants.ApplicationCommandOptionTypes.STRING,
+      choices: [{ name: "on",  value: "true" },
+                { name: "off", value: "false" }]
+    },
+  ],
+  executor: async (interaction, bot, player) => {
 
-    if (!player || !msg.guildId) {
+    if (!player || !interaction.guildId) {
       return;
     }
 
-    const queue = player.getQueue(msg.guildId);
+    const queue = player.getQueue(interaction.guildId);
     if (!queue) {
-      return msg.reply("There are no songs in the queue.");
+      return interaction.reply("There are no songs in the queue.");
     }
 
-    // Check included commands. If only ".filter", list the currently enabled filters
-    const filter = msg.content.substring(8, msg.content.length).split(" ");
-    if (filter.length === 1 && filter[0] === "") {
+    // Check included commands. If only "/filter", list the currently enabled filters
+    const filter = interaction.options.getString("name");
+    const toggle: boolean = JSON.parse(interaction.options.getString("toggle")!);
+    
+    if (!filter && toggle === null) {
       
       const filters = queue.getFiltersEnabled();
       
       if (filters.length === 0) {
-        return msg.reply("No filters currently enabled.");
+        return interaction.reply("No filters currently enabled.");
       }
 
       let filtersString = "";
@@ -33,22 +58,13 @@ export const filter: CommandDefinition = {
         filtersString += "- " + filter + "\n";
       });
       
-      return msg.reply("Filters currently enabled:\n" + filtersString);
+      return interaction.reply("Filters currently enabled:\n" + filtersString);
     }
-    else if (filter.length < 2) {
-      return msg.reply("You need to provide a filter command.");
+    else if (!filter && toggle !== null) {
+      return interaction.reply({ content: "You need to provide a filter name.", ephemeral: true });
     }
-
-    // Set enable bool
-    let enable: boolean;
-    if (filter[1] === "on") {
-      enable = true;
-    } 
-    else if (filter[1] === "off") {
-      enable = false;
-    }
-    else {
-      return msg.reply("Wrong formatting. Filter command can only be on or off.");
+    else if (filter && toggle === null) {
+      return interaction.reply({ content: "You need to specify if filter should be turned on or off.", ephemeral: true });
     }
 
     let filters = {
@@ -69,13 +85,10 @@ export const filter: CommandDefinition = {
     }
 
     // Check if filter is valid, and if so set filter
-    const filterKey = filter[0] as keyof typeof filters;
-    if (!filters.hasOwnProperty(filterKey)) {
-      return msg.channel.send("Requested filter not found");
-    }
-    filters[filterKey] = enable;
+    const filterKey = filter as keyof typeof filters;
+    filters[filterKey] = toggle;
     await queue.setFilters(filters);
 
-    return msg.channel.send(`Filter ${filter[0]} has been turned ${filter[1]}.`);
+    return interaction.reply(`Filter ${filter} has been turned ${toggle ? "on" : "off"}.`);
   }
 };

@@ -3,21 +3,21 @@ import { Category } from "../../constants";
 
 export const stop: CommandDefinition = {
   name: "stop",
-  description: "Stop playing music",
+  description: "Stop playing music, and clear the queue",
   category: Category.AUDIO,
-  executor: async (msg, bot, player) => {
+  executor: async (interaction, bot, player) => {
 
-    if (!player || !msg.guildId) {
+    if (!player || !interaction.guildId) {
       return;
     }
 
-    const queue = player.getQueue(msg.guildId);
+    const queue = player.getQueue(interaction.guildId);
     if (!queue) {
-      return msg.reply("There are no songs in the queue.");
+      return interaction.reply("There are no songs in the queue.");
     }
 
     queue.destroy();
 
-    return msg.channel.send("Music has been stopped. See you later!");
+    return interaction.reply("Music has been stopped. See you later!");
   }
 };

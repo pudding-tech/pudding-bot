@@ -3,21 +3,21 @@ import { Category } from "../../constants";
 
 export const resume: CommandDefinition = {
   name: "resume",
-  description: "Resume currently paused queue",
+  description: "Resume currently paused music queue",
   category: Category.AUDIO,
-  executor: async (msg, bot, player) => {
+  executor: async (interaction, bot, player) => {
 
-    if (!player || !msg.guildId) {
+    if (!player || !interaction.guildId) {
       return;
     }
 
-    const queue = player.getQueue(msg.guildId);
+    const queue = player.getQueue(interaction.guildId);
     if (!queue) {
-      return msg.reply("There are no songs in the queue.");
+      return interaction.reply("There are no songs in the queue.");
     }
 
     queue.setPaused(false);
 
-    return msg.channel.send("Music has been resumed! Use .pause to pause currently playing music.");
+    return interaction.reply("Music has been resumed! Use .pause to pause currently playing music.");
   }
 };

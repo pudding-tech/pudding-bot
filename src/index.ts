@@ -1,65 +1,93 @@
-import Discord from "discord.js";
-import { Player } from "discord-player";
 import dotenv from "dotenv";
+import Discord from "discord.js";
+import { REST } from "@discordjs/rest";
+import { Routes } from "discord-api-types/v9";
+import { Player } from "discord-player";
 import { commands } from "./commands";
-import { CMD_PREFIX } from "./constants";
-import { plexConnect } from "./plex";
+import { plexConnect } from "./plexConnect";
 
 dotenv.config();
 
-const intents = new Discord.Intents(32767);
-const bot = new Discord.Client({ intents });
-//const bot = new Discord.Client({ intents: [Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MEMBERS, Discord.Intents.GUILD_MESSAGES] });
+const puddingbotToken = process.env.PUDDINGBOT_TOKEN;
+const clientId = process.env.PUDDINGBOT_CLIENT_ID;
+const guilds = process.env.GUILD_ID?.split(",");
 
-bot.once("ready", () => {
+if (!puddingbotToken) {
+  console.error("Please provide a Discord bot token as an environment variable");
+  process.exit(0);
+}
+if (!clientId) {
+  console.error("Please provide a Discord bot client ID as an environment variable");
+  process.exit(0);
+}
+if (!guilds) {
+  console.error("Please provide a Discord guild ID as an environment variable");
+  process.exit(0);
+}
+
+const bot = new Discord.Client({
+  intents: [
+    Discord.Intents.FLAGS.GUILDS,
+    Discord.Intents.FLAGS.GUILD_MESSAGES,
+    Discord.Intents.FLAGS.GUILD_MEMBERS,
+    Discord.Intents.FLAGS.GUILD_VOICE_STATES
+  ]
+});
+
+// Register commands to Discord servers via API
+const rest = new REST({ version: "9"}).setToken(puddingbotToken);
+
+guilds.forEach( async (guildId) => {
+  await rest.put(Routes.applicationGuildCommands(clientId, guildId), {body: commands});
+  console.log("Successfully registered " + commands.length + " commands for server: " + guildId);
+});
+
+bot.once("ready", async () => {
   console.log(bot.user?.username + " sucessfully logged in!");
 
   // Set bot activity
   bot.user?.setPresence({
     status: "online",
     activities: [{
-        name: ".help",
+        name: "/help",
         type: "PLAYING"
     }]
   });
 
-  // Connect to plex servers
-  plexConnect(bot);
+  // Connect to Plex servers
+  try {
+    plexConnect(bot);
+  }
+  catch (err) {
+    console.log(err);
+  }
 });
 
 bot.on("disconnect", () => {
   console.log(bot.user?.username + " has logged out...");
 });
 
-// Listener for incoming messages
-bot.on("messageCreate", async (msg) => {
+bot.on("interactionCreate", async (interaction) => {
 
-  // Ignore bot messages
-  if (msg.author.bot)
+  if (!interaction.isCommand())
     return;
 
-  // Check if command
-  if (msg.content.startsWith(CMD_PREFIX)) {
-
-    // Trim input to command only
-    const cmdInput = msg.content.substring(CMD_PREFIX.length, msg.content.includes(" ") ? msg.content.indexOf(" ") : msg.content.length);
-    
-    const command = commands.find(cmd => cmd.name === cmdInput);
-    
-    if (command) {
-      console.log(`Command "${command.name}" used by ${msg.author.tag}`);
-      try {
-        await command.executor(msg, bot, player);
-      }
-      catch (e) {
-        console.log("Error executing command");
-        console.log(e);
-      }
+  const command = commands.find(cmd => cmd.name === interaction.commandName);
+  
+  if (command) {
+    console.log(`Command "${command.name}" used by ${interaction.user.tag}`);
+    try {
+      await command.executor(interaction, bot, player);
     }
-    else {
-      msg.reply("Command does not exist.\n" +
-        "Use `.help` for a list of available commands.");
+    catch (e) {
+      interaction.reply({ content: "Error executing command.", ephemeral: true });
+      console.log("Error executing command");
+      console.log(e);
     }
+  }
+  else {
+    interaction.reply({ content: "Command does not exist.\n" +
+      "Use `/help` for a list of available commands.", ephemeral: true });
   }
 });
 
@@ -72,4 +100,4 @@ const player = new Player(bot, {
 });
 
 // Login bot
-bot.login(process.env.PUDDINGBOT_TOKEN);
+bot.login(puddingbotToken);

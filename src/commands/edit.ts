@@ -1,3 +1,4 @@
+import { Constants } from "discord.js";
 import { CommandDefinition } from "../CommandDefinition";
 import { Category } from "../constants";
 import { editMessage } from "../messages/edits/editMessage";
@@ -7,7 +8,38 @@ export const edit: CommandDefinition = {
   description: "Edit a message in a Discord channel",
   commandDisplay: "edit <...>",
   category: Category.ADMIN,
-  executor: async (msg, bot) => {
-    return editMessage(bot, msg, msg.content.substring(6, msg.content.length));
+  options: [
+    {
+      name: "plex",
+      description: "Edit the Plex message in services channel - Only usable for Plex admins",
+      type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
+      options: [
+        {
+          name: "server",
+          description: "Name of server to change status of",
+          required: true,
+          type: Constants.ApplicationCommandOptionTypes.STRING,
+          choices: [{name: "puddingflix", value: "puddingflix"},
+                    {name: "duckflix", value: "duckflix"}]
+        },
+        {
+          name: "operational",
+          description: "Is server operational?",
+          required: true,
+          type: Constants.ApplicationCommandOptionTypes.NUMBER,
+          choices: [{name: "yes", value: 1},
+                    {name: "no", value: 0}]
+        },
+        {
+          name: "custom_status",
+          description: "Optional custom message used for the server's status",
+          required: false,
+          type: Constants.ApplicationCommandOptionTypes.STRING
+        }
+      ]
+    }
+  ],
+  executor: async (interaction, bot) => {
+    return editMessage(bot, interaction);
   }
 };

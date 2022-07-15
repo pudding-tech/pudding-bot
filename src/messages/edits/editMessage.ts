@@ -2,28 +2,31 @@ import Discord from "discord.js";
 import { editPlexMessage } from "./editPlexMessage";
 
 /**
- * Handle .edit command
+ * Handle /edit command
  * @param {Discord.Client} bot Discord bot
- * @param {Discord.Message} msg Message object itself, used for sending messages
- * @param {string} text Text to check for various commands
+ * @param {Discord.CommandInteraction} interaction Interaction object
  */
-export const editMessage = async (bot: Discord.Client, msg: Discord.Message, text: string) => {
+export const editMessage = async (bot: Discord.Client, interaction: Discord.CommandInteraction) => {
 
-  // Extract first word
-  const cmd = text.substring(0, text.includes(" ") ? text.indexOf(" ") : text.length);
-  text = text.substring(cmd.length + 1, text.length);
+  // Extract which message to edit
+  const subCmd = interaction.options.getSubcommand();
+  console.log(subCmd);
 
-  // Show available .edit commands
-  if (cmd === "help") {
-    return msg.reply("These are the available commands for editing messages:\n\n" +
-    "`.edit plex <...>`   -   This command is only usable for Plex admins");
+  if (!subCmd) {
+    return interaction.reply({ content: "Message to edit not supplied!", ephemeral: true });
+  }
+
+  // Show available /edit commands
+  else if (subCmd === "help") {
+    return interaction.reply("These are the available commands for editing messages:\n\n" +
+    "`/edit message:plex <...>`   -   This command is only usable for Plex admins");
   }
 
   // Edit Plex server status
-  if (cmd === "plex") {
-    return editPlexMessage(bot, msg, text);
+  else if (subCmd === "plex") {
+    return editPlexMessage(bot, interaction);
   }
 
-  return msg.reply("Edit command not specified.\n" +
-    "Use `.edit help` for a list of available edit commands.");
+  return interaction.reply({ content: "Edit command not specified.\n" +
+    "Use `/edit message:help` for a list of available edit commands.", ephemeral: true });
 };

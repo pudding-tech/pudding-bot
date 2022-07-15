@@ -23,46 +23,46 @@ export const plexMessage = async (client: Discord.Client, serverStatus: Array<bo
       }
       else {
         // Edit existing message
-        for (const message of messages) {
-          try {
-            if (customStatus === undefined) {
-              setStatus();
-            }
-            else {
-              setStatusCustom();
-            }
-            return await message[1].edit({ embeds: [plexStatusMsg(texts.puddingflixHeader, texts.puddingflixSubtext, texts.duckflixHeader, texts.duckflixSubtext)] });
+        const message = messages.first(1);
+        try {
+          if (serverStatus[0] === null || serverStatus[1] === null) {
+            setStatusCustom();
           }
-          catch (e) {
-            console.log(e);
-            return;
+          else {
+            setStatus();
           }
+          return await message[0].edit({ embeds: [plexStatusMsg(texts.puddingflixHeader, texts.puddingflixSubtext, texts.duckflixHeader, texts.duckflixSubtext)] });
+        }
+        catch (e) {
+          console.log(e);
+          return;
         }
       }
     });
 
   const setStatusCustom = () => {
-    if (customStatus === undefined)
-      return;
 
-    // Check for custom status message and reset command
-    if (customStatus === "" || customStatus === "reset") {
+    // Check for custom status message
+    if (customStatus === undefined) {
       // Set subtext depending on whether server is online or not
       if (serverStatus[0] || serverStatus[1])
-        customStatus = texts.upSubtextStandard.substring(1, texts.upSubtextStandard.length -1);
+        customStatus = texts.upSubtextStandard;//.substring(1, texts.upSubtextStandard.length -1);
       else
-        customStatus = texts.downSubtextStandard.substring(1, texts.downSubtextStandard.length -1);
+        customStatus = texts.downSubtextStandard;//.substring(1, texts.downSubtextStandard.length -1);
+    }
+    else {
+      customStatus = "*" + customStatus + "*";
     }
 
     // Check which server message is for, update text and global server status
     if (serverStatus[0] !== null) {
       texts.puddingflixHeader = texts.puddingflix + (serverStatus[0] ? texts.upCheckmark : texts.downCheckmark);
-      texts.puddingflixSubtext = "*" + customStatus + "*";
+      texts.puddingflixSubtext = customStatus;
       SData("puddingflix", serverStatus[0]);
     }
     else if (serverStatus[1] !== null) {
       texts.duckflixHeader = texts.duckflix + (serverStatus[1] ? texts.upCheckmark : texts.downCheckmark);
-      texts.duckflixSubtext = "*" + customStatus + "*";
+      texts.duckflixSubtext = customStatus;
       SData("duckflix", serverStatus[1]);
     }
   };
