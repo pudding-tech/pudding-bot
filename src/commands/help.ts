@@ -1,6 +1,5 @@
 import { CommandDefinition } from "../CommandDefinition";
-//import { MessageEmbed } from 'Discord.js';
-const { MessageEmbed } = require("discord.js");
+import { MessageEmbed } from "discord.js";
 import { commands } from "../commands";
 import { BOT_COLOR, Category } from "../constants";
 
@@ -8,14 +7,14 @@ export const help: CommandDefinition = {
   name: "help",
   description: "Help for PuddingBot",
   category: Category.HELP,
-  executor: async (msg) => {
+  executor: async (interaction) => {
 
     // Build strings of available commands
-    let linkCommands = "";
-    let imagesCommands = "";
-    let utilCommands = "";
-    let audioCommands = "";
-    let adminCommands = "";
+    let linkCommands = "\u200b";
+    let imagesCommands = "\u200b";
+    let utilCommands = "\u200b";
+    let audioCommands = "\u200b";
+    let adminCommands = "\u200b";
 
     commands.forEach( cmd => {
       switch (cmd.category) {
@@ -43,12 +42,12 @@ export const help: CommandDefinition = {
       fields: [
         {
           name: `${Category.LINK}:`,
-          value: linkCommands,
+          value: linkCommands || " ",
           inline: false
         },
         {
           name: `${Category.IMAGES}:`,
-          value: imagesCommands,
+          value: imagesCommands || " ",
           inline: false
         },
         {
@@ -71,6 +70,6 @@ export const help: CommandDefinition = {
       footer: { text: "Contact mods if you have further questions" },
     });
 
-    return msg.channel.send({ embeds: [helpEmbed] });
+    return interaction.reply({ embeds: [helpEmbed] });
   }
 };

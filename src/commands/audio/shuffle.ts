@@ -5,19 +5,19 @@ export const shuffle: CommandDefinition = {
   name: "shuffle",
   description: "Shuffles the music queue",
   category: Category.AUDIO,
-  executor: async (msg, bot, player) => {
+  executor: async (interaction, bot, player) => {
 
-    if (!player || !msg.guildId) {
+    if (!player || !interaction.guildId) {
       return;
     }
 
-    const queue = player.getQueue(msg.guildId);
+    const queue = player.getQueue(interaction.guildId);
     if (!queue) {
-      return msg.reply("There are no songs in the queue.");
+      return interaction.reply("There are no songs in the queue.");
     }
 
     queue.shuffle();
 
-    return msg.channel.send(queue.tracks.length + " songs have been shuffled.");
+    return interaction.reply(queue.tracks.length + " songs have been shuffled.");
   }
 };

@@ -4,22 +4,23 @@ import { plexMessage } from "../plexMessage";
 /**
  * Edit Plex message in services channel
  * @param {Discord.Client} bot Discord bot
- * @param {Discord.Message} msg Message object itself, used for sending messages
- * @param {string} text Text to check for various commands
+ * @param {Discord.CommandInteraction} interaction Interaction object
  */
-export const editPlexMessage = async (bot: Discord.Client, msg: Discord.Message, text: string) => {
+export const editPlexMessage = async (bot: Discord.Client, interaction: Discord.CommandInteraction) => {
 
-  const server = text.substring(0, text.includes(" ") ? text.indexOf(" ") : text.length);
-  text = text.substring(text.indexOf(" ") + 1, text.length);
+  const server = interaction.options.getString("server");
+  //console.log("server: " + server);
 
   if (server === "puddingflix" || server === "duckflix") {
 
-    const operational = text.substring(0, text.includes(" ") ? text.indexOf(" ") : text.length);
-    text = text.substring(text.includes(" ") ? text.indexOf(" ") + 1: 1, text.length);
+    const operational = interaction.options.getNumber("operational");
+    //console.log("operational: " + operational);
 
-    if (operational === "0" || operational === "1") {
+    if (operational === 0 || operational === 1) {
 
-      const status: boolean = parseInt(operational) ? true : false;
+      const status: boolean = operational ? true : false;
+      //console.log("status: " + status);
+
       let serverSelect: Array<any> = [];
 
       if (server === "puddingflix") {
@@ -29,20 +30,19 @@ export const editPlexMessage = async (bot: Discord.Client, msg: Discord.Message,
         serverSelect = [null, status];
       }
 
-      const customStatus = text.split("\"")[1] || "";
+      const customStatus = interaction.options.getString("custom_status") || undefined;
 
       // Check permissions
-      const author = msg.author.id;
-      if (author !== "110276423779897344" && author !== "111967042424274944") {
-        return msg.reply("You do not have permissions to change the Plex services message");
+      if (interaction.user.id !== "110276423779897344" && interaction.user.id !== "111967042424274944") {
+        return interaction.reply("You do not have permissions to change the Plex services message.");
       }
       
       try {
         await plexMessage(bot, serverSelect, customStatus);
-        return await msg.reply("You have successfully editited the Plex services message");
+        return await interaction.reply("You have successfully editited the Plex services message");
       }
       catch (e) {
-        console.log(e);
+        console.error(e);
         return;
       }
     }
@@ -58,9 +58,9 @@ export const editPlexMessage = async (bot: Discord.Client, msg: Discord.Message,
     "*<custom status>* should be enclosed in \"\" (double quotes).\n\n" +
     "Examples:\n`.edit plex puddingflix 0 \"Maintenance\"`\n`.edit plex puddingflix 1`";
     
-    return msg.channel.send(text);
+    return interaction.reply(text);
   }
 
-  return msg.reply("Wrong formatting for edit Plex command.\n" +
+  return interaction.reply("Wrong formatting for edit Plex command.\n" +
     "Use `.edit plex help` for help formatting for Plex.");
 };

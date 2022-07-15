@@ -1,13 +1,12 @@
-import { Message } from "discord.js";
 import { CommandDefinition } from "../CommandDefinition";
-const { MessageEmbed } = require("discord.js");
+import { MessageEmbed } from "discord.js";
 import { BOT_COLOR, Category } from "../constants";
 
 export const pots: CommandDefinition = {
   name: "pots",
   description: "Link to Puddings of the Storm Youtube playlist",
   category: Category.LINK,
-  executor: async (msg) => {
+  executor: async (interaction) => {
     const potsEmbed = new MessageEmbed({
       title: "Puddings of the Storm",
       description: potsMessage,
@@ -15,7 +14,7 @@ export const pots: CommandDefinition = {
       color: BOT_COLOR
     });
 
-    return msg.channel.send({ embeds: [potsEmbed] });
+    return interaction.reply({ embeds: [potsEmbed] });
   }
 };
 

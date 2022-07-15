@@ -5,19 +5,19 @@ export const pause: CommandDefinition = {
   name: "pause",
   description: "Pause currently playing music",
   category: Category.AUDIO,
-  executor: async (msg, bot, player) => {
+  executor: async (interaction, bot, player) => {
 
-    if (!player || !msg.guildId) {
+    if (!player || !interaction.guildId) {
       return;
     }
 
-    const queue = player.getQueue(msg.guildId);
+    const queue = player.getQueue(interaction.guildId);
     if (!queue) {
-      return msg.reply("There are no songs in the queue.");
+      return interaction.reply("There are no songs in the queue.");
     }
 
     queue.setPaused(true);
 
-    return msg.channel.send("Music has been paused! Use .resume to continue playing the music.");
+    return interaction.reply("Music has been paused! Use .resume to continue playing the music.");
   }
 };

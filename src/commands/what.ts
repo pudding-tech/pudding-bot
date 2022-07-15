@@ -1,18 +1,19 @@
 import { CommandDefinition } from "../CommandDefinition";
-const { MessageEmbed } = require("discord.js");
+import { MessageEmbed } from "discord.js";
 import { BOT_COLOR, Category } from "../constants";
 
 const img = "https://i.imgur.com/wAtmxTe.gif";
 
 export const what: CommandDefinition = {
   name: "what",
+  description: "You what now?",
   category: Category.IMAGES,
-  executor: async (msg) => {
+  executor: async (interaction) => {
     const whatEmbed = new MessageEmbed({
       image: { url: img},
       color: BOT_COLOR
     });
 
-    return msg.channel.send({ embeds: [whatEmbed] });
+    return interaction.reply({ embeds: [whatEmbed] });
   }
 };

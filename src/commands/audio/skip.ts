@@ -1,20 +1,20 @@
 import { CommandDefinition } from "../../CommandDefinition";
-const { MessageEmbed } = require("discord.js");
+import { MessageEmbed } from "discord.js";
 import { BOT_COLOR, Category } from "../../constants";
 
 export const skip: CommandDefinition = {
   name: "skip",
   description: "Skips the currently playing song",
   category: Category.AUDIO,
-  executor: async (msg, bot, player) => {
+  executor: async (interaction, bot, player) => {
 
-    if (!player || !msg.guildId) {
+    if (!player || !interaction.guildId) {
       return;
     }
 
-    const queue = player.getQueue(msg.guildId);
+    const queue = player.getQueue(interaction.guildId);
     if (!queue) {
-      return msg.reply("There are no songs in the queue.");
+      return interaction.reply("There are no songs in the queue.");
     }
 
     const currentSong = queue.current;
@@ -29,6 +29,6 @@ export const skip: CommandDefinition = {
       color: BOT_COLOR
     });
 
-    return msg.channel.send({ embeds: [skipEmbed] });
+    return interaction.reply({ embeds: [skipEmbed] });
   }
 };
