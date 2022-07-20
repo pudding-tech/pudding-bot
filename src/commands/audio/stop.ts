@@ -3,7 +3,7 @@ import { Category } from "../../constants";
 
 export const stop: CommandDefinition = {
   name: "stop",
-  description: "Stop playing music, and clear the queue",
+  description: "Stop playing music and clear the queue",
   category: Category.AUDIO,
   executor: async (interaction, bot, player) => {
 

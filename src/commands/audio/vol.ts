@@ -9,8 +9,8 @@ export const vol: CommandDefinition = {
   category: Category.AUDIO,
   options: [
     {
-      name: "volume-level",
-      description: "Level to set volume to (0 - 100)",
+      name: "volume",
+      description: "Set volume to this value (0 - 100)",
       required: false,
       type: Constants.ApplicationCommandOptionTypes.NUMBER
     }
@@ -27,7 +27,7 @@ export const vol: CommandDefinition = {
     }
 
     // Check if command includes volume to set
-    const vol = interaction.options.getNumber("volume level");
+    const vol = interaction.options.getNumber("volume");
     if (vol) {
       queue.setVolume(vol);
       return interaction.reply("Volume set to: " + vol + "%");

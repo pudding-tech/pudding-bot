@@ -16,22 +16,33 @@ export const help: CommandDefinition = {
     let audioCommands = "\u200b";
     let adminCommands = "\u200b";
 
+    const buildCommandString = (cmd: CommandDefinition): string => {
+      if (Array.isArray(cmd.commandDisplay)) {
+        let commandString = "";
+        cmd.commandDisplay.forEach( displayName => { commandString += `\`/${displayName}\`\n`; });
+        return commandString;
+      }
+      else {
+        return `\`/${cmd.commandDisplay || cmd.name}\`\n`;
+      }
+    };
+
     commands.forEach( cmd => {
       switch (cmd.category) {
         case Category.LINK:
-          linkCommands += `\`.${cmd.commandDisplay || cmd.name}\`\n`;
+          linkCommands += buildCommandString(cmd);
           break;
         case Category.IMAGES:
-          imagesCommands += `\`.${cmd.commandDisplay || cmd.name}\`\n`;
+          imagesCommands += buildCommandString(cmd);
           break;
         case Category.UTIL:
-          utilCommands += `\`.${cmd.commandDisplay || cmd.name}\`\n`;
+          utilCommands += buildCommandString(cmd);
           break;
         case Category.AUDIO:
-          audioCommands += `\`.${cmd.commandDisplay || cmd.name}\`\n`;
+          audioCommands += buildCommandString(cmd);
           break;
         case Category.ADMIN:
-          adminCommands += `\`.${cmd.commandDisplay || cmd.name}\`\n`;
+          adminCommands += buildCommandString(cmd);
           break;
       }
     });
@@ -42,12 +53,12 @@ export const help: CommandDefinition = {
       fields: [
         {
           name: `${Category.LINK}:`,
-          value: linkCommands || " ",
+          value: linkCommands,
           inline: false
         },
         {
           name: `${Category.IMAGES}:`,
-          value: imagesCommands || " ",
+          value: imagesCommands,
           inline: false
         },
         {

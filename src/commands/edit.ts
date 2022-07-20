@@ -6,7 +6,7 @@ import { editMessage } from "../messages/edits/editMessage";
 export const edit: CommandDefinition = {
   name: "edit",
   description: "Edit a message in a Discord channel",
-  commandDisplay: "edit <...>",
+  commandDisplay: ["edit plex <server> <operational> <custom_status>?"],
   category: Category.ADMIN,
   options: [
     {
