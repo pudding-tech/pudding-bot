@@ -15,13 +15,12 @@ COPY ./ ./
 RUN tsc -p ./
 
 # Run build
-CMD ["node", "build/index.js"]
-#CMD ["npx", "ts-node", "src/index.ts"]
+CMD ["npm", "run", "startbuild"]
 
-# Commands for building image and running container:
-#   docker build -t puddingbot ./
-#   docker run -d --name puddingbot --env-file .env puddingbot
+# Commands for building image and running container (substitute latest with version if building a release):
+#   docker build -t puddingbot:latest ./
+#   docker run -d --name puddingbot --env-file .env puddingbot:latest
 
-# Save and load image (for transferring to another host):
-#   docker save -o puddingbot.tar puddingbot
+# Save and load image (for transferring to another host) (substitute latest with version if saving a release):
+#   docker save -o puddingbot.tar puddingbot:latest
 #   docker load -i puddingbot.tar

@@ -5,6 +5,7 @@ import { Routes } from "discord-api-types/v9";
 import { Player } from "discord-player";
 import { commands } from "./commands";
 import { plexConnect } from "./plexConnect";
+import { VERSION } from "./constants";
 
 dotenv.config();
 
@@ -43,7 +44,7 @@ guilds.forEach( async (guildId) => {
 });
 
 bot.once("ready", async () => {
-  console.log(bot.user?.username + " sucessfully logged in!");
+  console.log(`${bot.user?.username} (${process.env.NODE_ENV === "prod" ? VERSION : "dev version"}) sucessfully logged in!`);
 
   // Set bot activity
   bot.user?.setPresence({

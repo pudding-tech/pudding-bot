@@ -1,7 +1,7 @@
 import { CommandDefinition } from "../CommandDefinition";
 import { MessageEmbed } from "discord.js";
 import { commands } from "../commands";
-import { BOT_COLOR, Category } from "../constants";
+import { BOT_COLOR, Category, VERSION } from "../constants";
 
 export const help: CommandDefinition = {
   name: "help",
@@ -47,8 +47,11 @@ export const help: CommandDefinition = {
       }
     });
 
+    // Set environment version to display
+    const environment = process.env.NODE_ENV === "prod" ? VERSION : "dev version";
+
     const helpEmbed = new MessageEmbed({
-      title: "PuddingBot  -  Help",
+      title: `PuddingBot  \`${environment}\`  -  Help`,
       description: "Hi, I'm Puddingbot, serving the Puddings Discord server.\n\n**Available commands:**",
       fields: [
         {
