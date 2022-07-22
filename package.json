@@ -4,9 +4,10 @@
   "description": "PuddingBot serves the discord server Puddings",
   "scripts": {
     "build": "tsc --project ./",
-    "start": "npx ts-node src/index.ts",
-    "dev": "npx nodemon src/index.ts",
-    "dev2": "concurrently \"tsc -w\" \"npx nodemon build/index.js\""
+    "start": "cross-env NODE_ENV=prod npx ts-node src/index.ts",
+    "startbuild": "cross-env NODE_ENV=prod node build/index.js",
+    "dev": "cross-env NODE_ENV=dev npx nodemon src/index.ts",
+    "dev2": "concurrently \"tsc -w\" \"cross-env NODE_ENV=dev npx nodemon build/index.js\""
   },
   "dependencies": {
     "@discordjs/opus": "^0.8.0",
@@ -26,6 +27,7 @@
     "@types/node": "^18.0.0",
     "@typescript-eslint/eslint-plugin": "^5.30.0",
     "@typescript-eslint/parser": "^5.30.0",
+    "cross-env": "^7.0.3",
     "eslint": "^8.18.0",
     "nodemon": "^2.0.18",
     "ts-node": "^10.8.1",
