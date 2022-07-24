@@ -5,10 +5,11 @@ const SData = require("simple-data-storage");
 /**
  * Create or edit Plex message in services Discord channel
  * @param {Discord.Client} client Discord bot
- * @param {Array<boolean>} serverStatus Operational status for the servers
- * @param {string} [customStatus] Optional custom server status message
+ * @param {Array<boolean | null>} serverStatus Operational status for the servers
+ * @param {boolean} [autoTriggered] Whether the function is triggered automatically or manually
+ * @param {string} [customMessage] Optional custom server status message
  */
-export const plexMessage = async (client: Discord.Client, serverStatus: Array<boolean>, customStatus?: string) => {
+export const plexMessage = async (client: Discord.Client, serverStatus: Array<boolean | null>, autoTriggered: boolean, customMessage?: string) => {
 
   // Get 'services' channel of Puddings server
   const channel = await client.channels.fetch(Channels.SERVICES_CHANNEL) as Discord.TextChannel;
@@ -25,12 +26,7 @@ export const plexMessage = async (client: Discord.Client, serverStatus: Array<bo
         // Edit existing message
         const message = messages.first(1);
         try {
-          if (serverStatus[0] === null || serverStatus[1] === null) {
-            setStatusCustom();
-          }
-          else {
-            setStatus();
-          }
+          autoTriggered ? setStatus() : setStatusCustom();
           return await message[0].edit({ embeds: [plexStatusMsg(texts.puddingflixHeader, texts.puddingflixSubtext, texts.duckflixHeader, texts.duckflixSubtext)] });
         }
         catch (e) {
@@ -42,27 +38,27 @@ export const plexMessage = async (client: Discord.Client, serverStatus: Array<bo
 
   const setStatusCustom = () => {
 
-    // Check for custom status message
-    if (customStatus === undefined) {
+    // Check for custom message
+    if (customMessage === undefined) {
       // Set subtext depending on whether server is online or not
       if (serverStatus[0] || serverStatus[1])
-        customStatus = texts.upSubtextStandard;//.substring(1, texts.upSubtextStandard.length -1);
+        customMessage = texts.upSubtextStandard;
       else
-        customStatus = texts.downSubtextStandard;//.substring(1, texts.downSubtextStandard.length -1);
+        customMessage = texts.downSubtextStandard;
     }
     else {
-      customStatus = "*" + customStatus + "*";
+      customMessage = "*" + customMessage + "*";
     }
 
-    // Check which server message is for, update text and global server status
+    // Check which server message is for, then update text and server status
     if (serverStatus[0] !== null) {
       texts.puddingflixHeader = texts.puddingflix + (serverStatus[0] ? texts.upCheckmark : texts.downCheckmark);
-      texts.puddingflixSubtext = customStatus;
+      texts.puddingflixSubtext = customMessage;
       SData("puddingflix", serverStatus[0]);
     }
     else if (serverStatus[1] !== null) {
       texts.duckflixHeader = texts.duckflix + (serverStatus[1] ? texts.upCheckmark : texts.downCheckmark);
-      texts.duckflixSubtext = customStatus;
+      texts.duckflixSubtext = customMessage;
       SData("duckflix", serverStatus[1]);
     }
   };

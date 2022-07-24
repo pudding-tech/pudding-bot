@@ -1,7 +1,7 @@
 import { Constants } from "discord.js";
 import { CommandDefinition } from "../CommandDefinition";
 import { Category } from "../constants";
-import { editMessage } from "../messages/edits/editMessage";
+import { editPlexMessage } from "../messages/edits/editPlexMessage";
 
 export const edit: CommandDefinition = {
   name: "edit",
@@ -40,6 +40,13 @@ export const edit: CommandDefinition = {
     }
   ],
   executor: async (interaction, bot) => {
-    return editMessage(bot, interaction);
+
+    // Extract which message to edit
+    const subCmd = interaction.options.getSubcommand();
+
+    // Edit Plex server status
+    if (subCmd === "plex") {
+      return editPlexMessage(bot, interaction);
+    }
   }
 };
