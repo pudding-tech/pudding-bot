@@ -51,8 +51,10 @@ export const help: CommandDefinition = {
     const environment = process.env.NODE_ENV === "prod" ? VERSION : "dev version";
 
     const helpEmbed = new MessageEmbed({
-      title: `PuddingBot  \`${environment}\`  -  Help`,
-      description: "Hi, I'm Puddingbot, serving the Puddings Discord server.\n\n**Available commands:**",
+      title: `PuddingBot  \`${environment}\``,
+      description: "Puddingbot is a Discord bot serving the Puddings Discord server. See below for a list of available commands. " +
+        "The source code is available in the PuddingTech organization on GitHub (see /git command). " +
+        "All puddings are welcome to contribute to the bot. Have fun!\n\n**Available commands:**",
       fields: [
         {
           name: `${Category.LINK}:`,
@@ -76,12 +78,12 @@ export const help: CommandDefinition = {
         },
         {
           name: `${Category.ADMIN}:`,
-          value: adminCommands,
+          value: adminCommands + "\u200b",
           inline: false
         }
       ],
       color: BOT_COLOR,
-      footer: { text: "Contact mods if you have further questions" },
+      footer: { text: "Contact mods if you have any further questions" },
     });
 
     return interaction.reply({ embeds: [helpEmbed] });

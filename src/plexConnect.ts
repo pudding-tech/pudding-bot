@@ -71,11 +71,11 @@ export const plexConnect = async (bot: Discord.Client) => {
 
     // Do not send edit request if status has not changed
     if (puddingflix === puddingflixLastValue && duckflix === duckflixLastValue) {
-      console.log("No plex status changes");
+      console.log("No plex status changes - " + new Date());
       return;
     }
 
-    plexMessage(bot, [puddingflix, duckflix]);
+    plexMessage(bot, [puddingflix, duckflix], true);
   };
 
   await serversCheck();

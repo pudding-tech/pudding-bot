@@ -4,13 +4,13 @@ import { BOT_COLOR, Category } from "../constants";
 
 export const puddingtech: CommandDefinition = {
   name: "puddingtech",
-  description: "Link to Puddingtech Github page",
+  description: "Link to Puddingtech GitHub page",
   category: Category.LINK,
   executor: async (interaction) => {
     const puddingtechEmbed = new MessageEmbed({
-      title: "Puddingtech Github page",
+      title: "Puddingtech GitHub page",
       url: "https://github.com/Pudding-Tech",
-      description: "Click to go to Puddingtech organization page on Github.",
+      description: "Click to go to Puddingtech organization page on GitHub.",
       color: BOT_COLOR
     });
 

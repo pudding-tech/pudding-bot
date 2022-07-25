@@ -29,6 +29,9 @@ export const vol: CommandDefinition = {
     // Check if command includes volume to set
     const vol = interaction.options.getNumber("volume");
     if (vol) {
+      if (vol < 0 || vol > 100) {
+        return interaction.reply("Please input a volume between 0 and 100");
+      }
       queue.setVolume(vol);
       return interaction.reply("Volume set to: " + vol + "%");
     }
