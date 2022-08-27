@@ -1,0 +1,7 @@
+version: "3.8"
+services:
+  puddingbot:
+    image: puddingbot:latest
+    build: ./
+    env_file:
+      - .env

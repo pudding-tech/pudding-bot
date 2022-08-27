@@ -50,12 +50,12 @@ bot.once("ready", async () => {
   bot.user?.setPresence({
     status: "online",
     activities: [{
-        name: "/help",
+        name: process.env.NODE_ENV === "prod" ? "/help" : "in dev mode",
         type: "PLAYING"
     }]
   });
 
-  // Connect to Plex servers
+  // Connect to Plex services
   try {
     plexConnect(bot);
   }

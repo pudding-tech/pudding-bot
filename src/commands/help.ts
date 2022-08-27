@@ -52,7 +52,7 @@ export const help: CommandDefinition = {
 
     const helpEmbed = new MessageEmbed({
       title: `PuddingBot  \`${environment}\``,
-      description: "Puddingbot is a Discord bot serving the Puddings Discord server. See below for a list of available commands. " +
+      description: "PuddingBot is a Discord bot serving the Puddings Discord server. See below for a list of available commands. " +
         "The source code is available in the PuddingTech organization on GitHub (see /git command). " +
         "All puddings are welcome to contribute to the bot. Have fun!\n\n**Available commands:**",
       fields: [

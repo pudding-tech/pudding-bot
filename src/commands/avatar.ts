@@ -1,6 +1,5 @@
-import { Constants } from "discord.js";
 import { CommandDefinition } from "../CommandDefinition";
-import { MessageEmbed } from "discord.js";
+import { MessageEmbed, Constants } from "discord.js";
 import { BOT_COLOR, Category } from "../constants";
 
 export const avatar: CommandDefinition = {
