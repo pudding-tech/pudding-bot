@@ -2,7 +2,7 @@ import axios from "axios";
 import { CommandDefinition } from "../CommandDefinition";
 import { MessageEmbed, Constants } from "discord.js";
 import { BOT_COLOR, Category } from "../constants";
-import { DebtEvent, DebtPayment } from "../types";
+import { DebtEvent, DebtPayment, DebtPaymentSender } from "../types";
 
 export const debt: CommandDefinition = {
   name: "debt",
@@ -50,15 +50,39 @@ export const debt: CommandDefinition = {
     }
 
     const payments: DebtPayment[] = paymentsRes.data;
+    const senders: DebtPaymentSender[] = [];
+
+    payments.forEach( payment => {
+      const sender = senders.find( sender => {
+        return sender.id === payment.sender.id;
+      });
+      const receiver = { id: payment.receiver.id, name: payment.receiver.name, amount: payment.amount };
+      
+      if (!sender) {
+        senders.push({id: payment.sender.id, name: payment.sender.name, receivers: [receiver] });
+      }
+      else {
+        sender.receivers.push(receiver);
+      }
+    });
 
     const debtEmbed = new MessageEmbed({
       title: event.name,
-      description: "Payment information from the Pudding Debt application.",
+      description: "Payment information from the [Pudding Debt](https://pudding-debt.hundseth.com) application.",
       color: BOT_COLOR
     });
 
-    payments.forEach( payment => {
-      debtEmbed.addFields({ name: "*From* " + payment.sender.name + " *to* " + payment.receiver.name, value: payment.amount.toFixed(2) + " kr", inline: false});
+    senders.forEach( sender => {
+      let receiverLine = "";
+      if (sender.receivers.length === 1) {
+        receiverLine = `- ${sender.receivers[0].name}: \u200B ${sender.receivers[0].amount.toFixed(2).replace(".", ",")} kr`;
+      }
+      else if (sender.receivers.length > 1) {
+        sender.receivers.forEach( receiver => {
+          receiverLine += `- ${receiver.name}: \u200B ${receiver.amount.toFixed(2).replace(".", ",")} kr\n`;
+        });
+      }
+      debtEmbed.addFields({ name: sender.name + " owes money to", value: receiverLine, inline: false});
     });
 
     return interaction.editReply({ embeds: [debtEmbed] });

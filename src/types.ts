@@ -15,3 +15,13 @@ export type DebtPayment = {
   },
   amount: number
 }
+
+export type DebtPaymentSender = {
+  id: number,
+  name: string
+  receivers: {
+    id: number,
+    name: string,
+    amount: number
+  }[]
+}
