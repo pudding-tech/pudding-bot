@@ -61,7 +61,7 @@ export const play: CommandDefinition = {
       searchEngine: QueryType.YOUTUBE_VIDEO
     });
     if (result.tracks.length === 0) {
-      return interaction.reply({ content: "Video not found. Please provide a proper Youtube URL.", ephemeral: true });
+      return interaction.reply({ content: "Video not found. Please provide a proper URL.", ephemeral: true });
     }
 
     const song = result.tracks[0];

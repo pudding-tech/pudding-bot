@@ -25,12 +25,12 @@ export const editPlexMessage = async (bot: Discord.Client, interaction: Discord.
 
   // Allow only Plex administrators
   if (interaction.user.id !== "110276423779897344" && interaction.user.id !== "111967042424274944") {
-    return interaction.reply("You do not have permissions to change the Plex services message.");
+    return interaction.reply({ content: "You do not have permissions to change the Plex services message.", ephemeral: true });
   }
   
   try {
     await plexMessage(bot, serverSelect, false, customStatus);
-    return await interaction.reply("You have successfully editited the Plex services message");
+    return await interaction.reply({ content: "You have successfully edited the Plex services message", ephemeral: true });
   }
   catch (e) {
     console.error(e);

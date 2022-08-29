@@ -20,10 +20,12 @@ import { skip } from "./commands/audio/skip";
 import { shuffle } from "./commands/audio/shuffle";
 import { filter } from "./commands/audio/filter";
 import { transcode } from "./commands/transcode";
+import { debt } from "./commands/debt";
 
 export const commands: CommandDefinition[] = [
   adventures,
   avatar,
+  debt,
   edit,
   filter,
   git,
