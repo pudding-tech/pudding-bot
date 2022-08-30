@@ -1,5 +1,5 @@
 import { CommandDefinition } from "../CommandDefinition";
-import { MessageEmbed } from "discord.js";
+import { EmbedBuilder } from "discord.js";
 import { commands } from "../commands";
 import { BOT_COLOR, Category, VERSION } from "../constants";
 
@@ -50,7 +50,7 @@ export const help: CommandDefinition = {
     // Set environment version to display
     const environment = process.env.NODE_ENV === "prod" ? VERSION : "dev version";
 
-    const helpEmbed = new MessageEmbed({
+    const helpEmbed = new EmbedBuilder({
       title: `PuddingBot  \`${environment}\``,
       description: "PuddingBot is a Discord bot serving the Puddings Discord server. See below for a list of available commands. " +
         "The source code is available in the PuddingTech organization on GitHub (see /git command). " +

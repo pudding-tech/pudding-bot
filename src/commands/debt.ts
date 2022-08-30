@@ -1,6 +1,6 @@
 import axios from "axios";
 import { CommandDefinition } from "../CommandDefinition";
-import { MessageEmbed, Constants } from "discord.js";
+import { EmbedBuilder, ApplicationCommandOptionType } from "discord.js";
 import { BOT_COLOR, Category } from "../constants";
 import { DebtEvent, DebtPayment, DebtPaymentSender } from "../types";
 
@@ -14,7 +14,7 @@ export const debt: CommandDefinition = {
       name: "event",
       description: "Name of event to display payments for",
       required: true,
-      type: Constants.ApplicationCommandOptionTypes.STRING
+      type: ApplicationCommandOptionType.String
     }
   ],
   executor: async (interaction) => {
@@ -66,7 +66,7 @@ export const debt: CommandDefinition = {
       }
     });
 
-    const debtEmbed = new MessageEmbed({
+    const debtEmbed = new EmbedBuilder({
       title: event.name,
       description: "Payment information from the [Pudding Debt](https://pudding-debt.hundseth.com) application.",
       color: BOT_COLOR

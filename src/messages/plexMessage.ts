@@ -1,4 +1,4 @@
-import Discord, { MessageEmbed } from "discord.js";
+import Discord, { EmbedBuilder } from "discord.js";
 import { BOT_COLOR, Channels } from "../constants";
 const SData = require("simple-data-storage");
 
@@ -125,7 +125,7 @@ const texts = {
 };
 
 const plexStatusMsg = (puddingflixHeader: string, puddingflixSub: string, duckflixHeader: string, duckflixSub: string) => {
-  return new MessageEmbed({
+  return new EmbedBuilder({
     title: "Current status of Plex servers",
     description: "See which Plex servers are currently operational. This post is automatically updated every hour.\n\u200b",
     fields: [

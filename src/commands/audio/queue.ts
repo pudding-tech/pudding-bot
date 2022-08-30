@@ -1,5 +1,5 @@
 import { CommandDefinition } from "../../CommandDefinition";
-import { MessageEmbed } from "discord.js";
+import { EmbedBuilder } from "discord.js";
 import { BOT_COLOR, Category } from "../../constants";
 
 export const queue: CommandDefinition = {
@@ -32,7 +32,7 @@ export const queue: CommandDefinition = {
       indicator: ":white_square_button:"
     });
 
-    const queueEmbed = new MessageEmbed({
+    const queueEmbed = new EmbedBuilder({
       description: `Currently playing:\n**${currentSong.title}**\n\n` +
         "Requested by *" + interaction.user.tag + "*\n\n" +
         progressBar + "\n\n" +

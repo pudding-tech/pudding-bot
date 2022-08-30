@@ -1,6 +1,6 @@
-import { Constants } from "discord.js";
+import { ApplicationCommandOptionType } from "discord.js";
 import { CommandDefinition } from "../../CommandDefinition";
-import { MessageEmbed } from "discord.js";
+import { EmbedBuilder } from "discord.js";
 import { QueryType } from "discord-player";
 import { BOT_COLOR, Category } from "../../constants";
 
@@ -14,7 +14,7 @@ export const play: CommandDefinition = {
       name: "url",
       description: "URL to music",
       required: true,
-      type: Constants.ApplicationCommandOptionTypes.STRING
+      type: ApplicationCommandOptionType.String
     }
   ],
   executor: async (interaction, bot, player) => {
@@ -30,7 +30,7 @@ export const play: CommandDefinition = {
     if (!voiceChannel) {
       return interaction.reply({ content: "You need to be in a voice channel to use this command.", ephemeral: true });
     }
-    if (interaction.guild?.me?.voice.channelId && voiceChannel.id !== interaction.guild?.me?.voice.channelId) {
+    if (interaction.guild.members.me?.voice.channelId && voiceChannel.id !== interaction.guild.members.me?.voice.channelId) {
       return interaction.reply({ content: "You are not in the same voice channel as PuddingBot.", ephemeral: true });
     }
 
@@ -71,7 +71,7 @@ export const play: CommandDefinition = {
       queue.play();
     }
 
-    const musicEmbed = new MessageEmbed({
+    const musicEmbed = new EmbedBuilder({
       title: `**${song.title}** has been added to the queue`,
       thumbnail: {
         url: song.thumbnail

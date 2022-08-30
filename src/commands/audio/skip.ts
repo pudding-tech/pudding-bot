@@ -1,5 +1,5 @@
 import { CommandDefinition } from "../../CommandDefinition";
-import { MessageEmbed } from "discord.js";
+import { EmbedBuilder } from "discord.js";
 import { BOT_COLOR, Category } from "../../constants";
 
 export const skip: CommandDefinition = {
@@ -21,7 +21,7 @@ export const skip: CommandDefinition = {
 
     queue.skip();
 
-    const skipEmbed = new MessageEmbed({
+    const skipEmbed = new EmbedBuilder({
       description: `**${currentSong.title}** has been skipped.`,
       thumbnail: {
         url: currentSong.thumbnail

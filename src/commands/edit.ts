@@ -1,4 +1,4 @@
-import { Constants } from "discord.js";
+import { ApplicationCommandOptionType } from "discord.js";
 import { CommandDefinition } from "../CommandDefinition";
 import { Category } from "../constants";
 import { editPlexMessage } from "../messages/edits/editPlexMessage";
@@ -12,13 +12,13 @@ export const edit: CommandDefinition = {
     {
       name: "plex",
       description: "Edit the Plex message in services channel - Only usable for Plex admins",
-      type: Constants.ApplicationCommandOptionTypes.SUB_COMMAND,
+      type: ApplicationCommandOptionType.Subcommand,
       options: [
         {
           name: "server",
           description: "Name of server to change status of",
           required: true,
-          type: Constants.ApplicationCommandOptionTypes.STRING,
+          type: ApplicationCommandOptionType.String,
           choices: [{name: "puddingflix", value: "puddingflix"},
                     {name: "duckflix", value: "duckflix"}]
         },
@@ -26,7 +26,7 @@ export const edit: CommandDefinition = {
           name: "operational",
           description: "Is server operational?",
           required: true,
-          type: Constants.ApplicationCommandOptionTypes.NUMBER,
+          type: ApplicationCommandOptionType.Number,
           choices: [{name: "yes", value: 1},
                     {name: "no", value: 0}]
         },
@@ -34,7 +34,7 @@ export const edit: CommandDefinition = {
           name: "custom_status",
           description: "Optional custom message used for the server's status",
           required: false,
-          type: Constants.ApplicationCommandOptionTypes.STRING
+          type: ApplicationCommandOptionType.String
         }
       ]
     }
