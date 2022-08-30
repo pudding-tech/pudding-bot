@@ -4,9 +4,9 @@ import { plexMessage } from "../plexMessage";
 /**
  * Edit Plex message in services channel
  * @param {Discord.Client} bot Discord bot
- * @param {Discord.CommandInteraction} interaction Interaction object
+ * @param {Discord.ChatInputCommandInteraction} interaction Interaction object
  */
-export const editPlexMessage = async (bot: Discord.Client, interaction: Discord.CommandInteraction) => {
+export const editPlexMessage = async (bot: Discord.Client, interaction: Discord.ChatInputCommandInteraction) => {
 
   const server = interaction.options.getString("server");
   const operational = interaction.options.getNumber("operational");
@@ -30,10 +30,10 @@ export const editPlexMessage = async (bot: Discord.Client, interaction: Discord.
   
   try {
     await plexMessage(bot, serverSelect, false, customStatus);
-    return await interaction.reply({ content: "You have successfully edited the Plex services message", ephemeral: true });
+    return interaction.reply({ content: "You have successfully edited the Plex services message", ephemeral: true });
   }
   catch (e) {
     console.error(e);
-    return;
+    return interaction.reply({ content: "Something went wrong :(", ephemeral: true });
   }
 };

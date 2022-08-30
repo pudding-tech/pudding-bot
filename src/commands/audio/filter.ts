@@ -1,4 +1,4 @@
-import { Constants } from "discord.js";
+import { ApplicationCommandOptionType } from "discord.js";
 import { CommandDefinition } from "../../CommandDefinition";
 import { Category } from "../../constants";
 const SData = require("simple-data-storage");
@@ -13,7 +13,7 @@ export const filter: CommandDefinition = {
       name: "name",
       description: "Name of filter",
       required: false,
-      type: Constants.ApplicationCommandOptionTypes.STRING,
+      type: ApplicationCommandOptionType.String,
       choices: [{ name: "nightcore",  value: "nightcore"},
                 { name: "vaporwave", value: "vaporwave" },
                 { name: "reverse", value: "reverse" },
@@ -25,7 +25,7 @@ export const filter: CommandDefinition = {
       name: "toggle",
       description: "Enable or disable filter",
       required: false,
-      type: Constants.ApplicationCommandOptionTypes.STRING,
+      type: ApplicationCommandOptionType.String,
       choices: [{ name: "on",  value: "true" },
                 { name: "off", value: "false" }]
     },

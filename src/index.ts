@@ -28,10 +28,10 @@ if (!guilds) {
 
 const bot = new Discord.Client({
   intents: [
-    Discord.Intents.FLAGS.GUILDS,
-    Discord.Intents.FLAGS.GUILD_MESSAGES,
-    Discord.Intents.FLAGS.GUILD_MEMBERS,
-    Discord.Intents.FLAGS.GUILD_VOICE_STATES
+    Discord.GatewayIntentBits.Guilds,
+    Discord.GatewayIntentBits.GuildMessages,
+    Discord.GatewayIntentBits.GuildMembers,
+    Discord.GatewayIntentBits.GuildVoiceStates
   ]
 });
 
@@ -51,7 +51,7 @@ bot.once("ready", async () => {
     status: "online",
     activities: [{
         name: process.env.NODE_ENV === "prod" ? "/help" : "in dev mode",
-        type: "PLAYING"
+        type: Discord.ActivityType.Playing
     }]
   });
 
@@ -70,7 +70,7 @@ bot.on("disconnect", () => {
 
 bot.on("interactionCreate", async (interaction) => {
 
-  if (!interaction.isCommand())
+  if (!interaction.isChatInputCommand())
     return;
 
   const command = commands.find(cmd => cmd.name === interaction.commandName);

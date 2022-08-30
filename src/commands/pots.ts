@@ -1,5 +1,5 @@
 import { CommandDefinition } from "../CommandDefinition";
-import { MessageEmbed } from "discord.js";
+import { EmbedBuilder } from "discord.js";
 import { BOT_COLOR, Category } from "../constants";
 
 export const pots: CommandDefinition = {
@@ -7,7 +7,7 @@ export const pots: CommandDefinition = {
   description: "Link to Puddings of the Storm HotS team",
   category: Category.LINK,
   executor: async (interaction) => {
-    const potsEmbed = new MessageEmbed({
+    const potsEmbed = new EmbedBuilder({
       title: "Puddings of the Storm",
       description: potsMessage,
       image: { url: "https://i.imgur.com/PsyVAU6.png" },

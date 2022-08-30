@@ -5,6 +5,6 @@ import { Category } from "./constants";
 export type CommandDefinition = ApplicationCommandData & {
   category: Category,
   commandDisplay?: string | string[],
-  requiredPermissions?: Discord.PermissionString[],
-  executor: (interaction: Discord.CommandInteraction, client: Discord.Client, player?: Player) => Promise<unknown>
+  requiredPermissions?: Discord.PermissionsString[],
+  executor: (interaction: Discord.ChatInputCommandInteraction, client: Discord.Client, player?: Player) => Promise<unknown>
 };

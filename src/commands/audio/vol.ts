@@ -1,4 +1,4 @@
-import { Constants } from "discord.js";
+import { ApplicationCommandOptionType } from "discord.js";
 import { CommandDefinition } from "../../CommandDefinition";
 import { Category } from "../../constants";
 
@@ -12,7 +12,7 @@ export const vol: CommandDefinition = {
       name: "volume",
       description: "Set volume to this value (0 - 100)",
       required: false,
-      type: Constants.ApplicationCommandOptionTypes.NUMBER
+      type: ApplicationCommandOptionType.Number
     }
   ],
   executor: async (interaction, bot, player) => {
