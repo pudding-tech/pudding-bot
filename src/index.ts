@@ -5,7 +5,8 @@ import { Routes } from "discord-api-types/v9";
 import { Player } from "discord-player";
 import { commands } from "./commands";
 import { plexConnect } from "./plexConnect";
-import { VERSION } from "./constants";
+import { VERSION, BOT_COLOR, Channels } from "./constants";
+import { getWelcomeMessage } from "./lib/welcomes";
 
 dotenv.config();
 
@@ -68,6 +69,7 @@ bot.on("disconnect", () => {
   console.log(bot.user?.username + " has logged out...");
 });
 
+// Interactions
 bot.on("interactionCreate", async (interaction) => {
 
   if (!interaction.isChatInputCommand())
@@ -90,6 +92,20 @@ bot.on("interactionCreate", async (interaction) => {
     interaction.reply({ content: "Command does not exist.\n" +
       "Use `/help` for a list of available commands.", ephemeral: true });
   }
+});
+
+// New user joins server
+bot.on("guildMemberAdd", async (member) => {
+  const channel = await member.guild.channels.fetch(Channels.GENERAL_CHANNEL) as Discord.TextChannel;
+
+  const memberEmbed = new Discord.EmbedBuilder({
+    title: "Welcome to Puddings!",
+    description: getWelcomeMessage(member.user),
+    image: { url: member.user.avatarURL() || ""},
+    color: BOT_COLOR
+  });
+
+  await channel.send({ embeds: [memberEmbed] });
 });
 
 // Music player
