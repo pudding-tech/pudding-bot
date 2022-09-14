@@ -2,7 +2,7 @@ import axios from "axios";
 import { CommandDefinition } from "../CommandDefinition";
 import { EmbedBuilder, ApplicationCommandOptionType } from "discord.js";
 import { BOT_COLOR, Category } from "../constants";
-import { DebtEvent, DebtPayment, DebtPaymentSender } from "../types";
+import { DebtEvent, DebtPayment, DebtPaymentSender } from "../lib/types";
 
 export const debt: CommandDefinition = {
   name: "debt",
