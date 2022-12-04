@@ -6,7 +6,7 @@ import { Player } from "discord-player";
 import { commands } from "./commands";
 import { plexConnect } from "./plexConnect";
 import { VERSION, BOT_COLOR, Channels } from "./constants";
-import { getWelcomeMessage } from "./lib/welcomes";
+import { getWelcomeMessage } from "./messages/welcomes";
 
 dotenv.config();
 

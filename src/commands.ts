@@ -1,4 +1,4 @@
-import { CommandDefinition } from "./CommandDefinition";
+import { CommandDefinition } from "./types/CommandDefinition";
 import { help } from "./commands/help";
 import { puddingtech } from "./commands/puddingtech";
 import { git } from "./commands/git";
