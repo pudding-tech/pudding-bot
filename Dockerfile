@@ -1,4 +1,4 @@
-FROM node:18.4.0-alpine
+FROM node:18-alpine
 
 # Use directory
 WORKDIR /usr/src/app
@@ -13,6 +13,9 @@ COPY ./ ./
 
 # Build to js
 RUN tsc -p ./
+
+# Set environment
+ENV NODE_ENV="prod"
 
 # Run build
 CMD ["npm", "run", "startbuild"]

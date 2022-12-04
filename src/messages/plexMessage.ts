@@ -1,6 +1,6 @@
 import Discord, { EmbedBuilder } from "discord.js";
+import SData from "simple-data-storage";
 import { BOT_COLOR, Channels } from "../constants";
-const SData = require("simple-data-storage");
 
 /**
  * Create or edit Plex message in services Discord channel

@@ -9,6 +9,9 @@ PuddingBot serves the discord server Puddings.
 > PUDDINGBOT_CLIENT_ID  
 > GUILD_ID  
 
+**Optional:**
+> NODE_ENV  
+
 **Plex specific (optional):**  
 > PLEX_CLIENT_IDENTIFIER  
 > PUDDINGFLIX_IP  
