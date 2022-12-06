@@ -1,8 +1,7 @@
-import axios from "axios";
-import { CommandDefinition } from "../CommandDefinition";
+import { CommandDefinition } from "../types/CommandDefinition";
 import { EmbedBuilder, ApplicationCommandOptionType } from "discord.js";
 import { BOT_COLOR, Category } from "../constants";
-import { DebtEvent, DebtPayment, DebtPaymentSender } from "../lib/types";
+import { DebtEvent, DebtPayment, DebtPaymentSender } from "../types/types";
 
 export const debt: CommandDefinition = {
   name: "debt",
@@ -22,37 +21,41 @@ export const debt: CommandDefinition = {
     await interaction.deferReply();
     const eventName = interaction.options.getString("event");
 
-    const eventsRes = await axios
-      .get("https://pudding-debt-api.hundseth.com/api/events")
-      .catch( (err) => {
-        console.log(err);
-      });
+    const events: DebtEvent[] = await fetch("https://pudding-debt-api.hundseth.com/api/events", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+      .then(res => res.json())
+      .catch(err => console.log(err));
 
-    if (!eventsRes) {
+    if (!events) {
       return interaction.editReply("There was an error contacting the Pudding Debt API.");
     }
 
-    const events: DebtEvent[] = eventsRes.data;
     const event = events.find(event => event.name.toLowerCase() === eventName?.toLowerCase());
 
     if (!event) {
       return interaction.editReply("Name *" + eventName + "* doesn't match any existing events.");
     }
 
-    const paymentsRes = await axios
-      .get("https://pudding-debt-api.hundseth.com/api/payments?eventId=" + event.id)
-      .catch( (err) => {
-        console.log(err);
-      });
+    const payments: DebtPayment[] = await fetch("https://pudding-debt-api.hundseth.com/api/payments?eventId=" + event.id, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+      .then(res => res.json())
+      .catch(err => console.log(err));
 
-    if (!paymentsRes) {
+    if (!payments) {
       return interaction.editReply("There was an error contacting the Pudding Debt API.");
     }
 
-    const payments: DebtPayment[] = paymentsRes.data;
     const senders: DebtPaymentSender[] = [];
 
-    payments.forEach( payment => {
+    payments.forEach(payment => {
       const sender = senders.find( sender => {
         return sender.id === payment.sender.id;
       });
@@ -72,7 +75,7 @@ export const debt: CommandDefinition = {
       color: BOT_COLOR
     });
 
-    senders.forEach( sender => {
+    senders.forEach(sender => {
       let receiverLine = "";
       if (sender.receivers.length === 1) {
         receiverLine = `- ${sender.receivers[0].name}: \u200B ${sender.receivers[0].amount.toFixed(2).replace(".", ",")} kr`;

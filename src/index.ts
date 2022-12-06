@@ -6,10 +6,11 @@ import { Player } from "discord-player";
 import { commands } from "./commands";
 import { plexConnect } from "./plexConnect";
 import { VERSION, BOT_COLOR, Channels } from "./constants";
-import { getWelcomeMessage } from "./lib/welcomes";
+import { getWelcomeMessage } from "./messages/welcomes";
 
 dotenv.config();
 
+const environment = process.env.NODE_ENV || "dev";
 const puddingbotToken = process.env.PUDDINGBOT_TOKEN;
 const clientId = process.env.PUDDINGBOT_CLIENT_ID;
 const guilds = process.env.GUILD_ID?.split(",");
@@ -45,13 +46,13 @@ guilds.forEach( async (guildId) => {
 });
 
 bot.once("ready", async () => {
-  console.log(`${bot.user?.username} (${process.env.NODE_ENV === "prod" ? VERSION : "dev version"}) sucessfully logged in!`);
+  console.log(`${bot.user?.username} (${environment === "prod" ? VERSION : "dev version"}) sucessfully logged in!`);
 
   // Set bot activity
   bot.user?.setPresence({
     status: "online",
     activities: [{
-        name: process.env.NODE_ENV === "prod" ? "/help" : "in dev mode",
+        name: environment === "prod" ? "/help" : "in dev mode",
         type: Discord.ActivityType.Playing
     }]
   });

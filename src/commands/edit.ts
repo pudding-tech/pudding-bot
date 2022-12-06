@@ -1,5 +1,5 @@
 import { ApplicationCommandOptionType } from "discord.js";
-import { CommandDefinition } from "../CommandDefinition";
+import { CommandDefinition } from "../types/CommandDefinition";
 import { Category } from "../constants";
 import { editPlexMessage } from "../messages/edits/editPlexMessage";
 

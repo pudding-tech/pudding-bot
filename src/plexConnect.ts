@@ -1,8 +1,8 @@
 import Discord from "discord.js";
+import PlexAPI from "plex-api";
+import cron from "node-cron";
+import SData from "simple-data-storage";
 import { plexMessage } from "./messages/plexMessage";
-const PlexAPI = require("plex-api");
-const cron = require("node-cron");
-const SData = require("simple-data-storage");
 
 export const plexConnect = async (bot: Discord.Client) => {
 

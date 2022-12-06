@@ -1,5 +1,5 @@
 import { ApplicationCommandOptionType } from "discord.js";
-import { CommandDefinition } from "../../CommandDefinition";
+import { CommandDefinition } from "../../types/CommandDefinition";
 import { EmbedBuilder } from "discord.js";
 import { QueryType } from "discord-player";
 import { BOT_COLOR, Category } from "../../constants";

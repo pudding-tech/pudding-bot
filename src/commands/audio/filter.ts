@@ -1,7 +1,7 @@
+import SData from "simple-data-storage";
 import { ApplicationCommandOptionType } from "discord.js";
-import { CommandDefinition } from "../../CommandDefinition";
+import { CommandDefinition } from "../../types/CommandDefinition";
 import { Category } from "../../constants";
-const SData = require("simple-data-storage");
 
 export const filter: CommandDefinition = {
   name: "filter",

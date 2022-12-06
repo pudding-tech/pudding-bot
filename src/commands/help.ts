@@ -1,4 +1,4 @@
-import { CommandDefinition } from "../CommandDefinition";
+import { CommandDefinition } from "../types/CommandDefinition";
 import { EmbedBuilder } from "discord.js";
 import { commands } from "../commands";
 import { BOT_COLOR, Category, VERSION } from "../constants";

@@ -1,6 +1,6 @@
 import Discord, { ApplicationCommandData } from "discord.js";
 import { Player } from "discord-player";
-import { Category } from "./constants";
+import { Category } from "../constants";
 
 export type CommandDefinition = ApplicationCommandData & {
   category: Category,
