@@ -139,7 +139,7 @@ const plexStatusMsg = (puddingflixHeader: string, puddingflixSub: string, duckfl
       },
       {
         name: "\u200b",
-        value: "Request a show or movie at <https://ombi.hundseth.com>\n\nContact <@110276423779897344> or <@111967042424274944> if you have questions"
+        value: "Request a show/movie at <https://overseerr.hundseth.com>\n\nContact <@110276423779897344> or <@111967042424274944> if you have questions"
       }
     ],
     color: BOT_COLOR
