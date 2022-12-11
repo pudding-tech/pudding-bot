@@ -22,10 +22,7 @@ export const debt: CommandDefinition = {
     const eventName = interaction.options.getString("event");
 
     const events: DebtEvent[] = await fetch("https://pudding-debt-api.hundseth.com/api/events", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json"
-      }
+      method: "GET"
     })
       .then(res => res.json())
       .catch(err => console.log(err));
@@ -41,10 +38,7 @@ export const debt: CommandDefinition = {
     }
 
     const payments: DebtPayment[] = await fetch("https://pudding-debt-api.hundseth.com/api/payments?eventId=" + event.id, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json"
-      }
+      method: "GET"
     })
       .then(res => res.json())
       .catch(err => console.log(err));

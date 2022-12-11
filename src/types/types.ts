@@ -1,3 +1,20 @@
+export type Image = {
+  name: string,
+  url: string,
+  value: number,
+  title?: string,
+  description?: string,
+  footer?: string
+}
+
+export type ImageData = {
+  name: string,
+  url: string,
+  title?: string,
+  description?: string,
+  footer?: string
+}
+
 export type DebtEvent = {
   id: number,
   name: string,
