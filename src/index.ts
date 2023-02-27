@@ -46,13 +46,13 @@ guilds.forEach( async (guildId) => {
 });
 
 bot.once("ready", async () => {
-  console.log(`${bot.user?.username} (${environment === "prod" ? VERSION : "dev version"}) sucessfully logged in!`);
+  console.log(`${bot.user?.username} (${environment === "production" || environment === "prod" ? VERSION : "dev version"}) sucessfully logged in!`);
 
   // Set bot activity
   bot.user?.setPresence({
     status: "online",
     activities: [{
-        name: environment === "prod" ? "/help" : "in dev mode",
+        name: environment === "production" || environment === "prod" ? "/help" : "in dev mode",
         type: Discord.ActivityType.Playing
     }]
   });

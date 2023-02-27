@@ -48,7 +48,7 @@ export const help: CommandDefinition = {
     });
 
     // Set environment version to display
-    const environment = process.env.NODE_ENV === "prod" ? VERSION : "dev version";
+    const environment = process.env.NODE_ENV === "production" || process.env.NODE_ENV === "prod" ? VERSION : "dev version";
 
     const helpEmbed = new EmbedBuilder({
       title: `PuddingBot  \`${environment}\``,
