@@ -45,14 +45,22 @@ guilds.forEach( async (guildId) => {
   console.log("Successfully registered " + commands.length + " commands for server: " + guildId);
 });
 
+// Music player
+const player = new Player(bot, {
+  ytdlOptions: {
+    quality: "highestaudio",
+    highWaterMark: 1 << 25
+  }
+});
+
 bot.once("ready", async () => {
-  console.log(`${bot.user?.username} (${environment === "production" || environment === "prod" ? VERSION : "dev version"}) sucessfully logged in!`);
+  console.log(`${bot.user?.username} (${environment === "production" ? VERSION : "dev version"}) sucessfully logged in!`);
 
   // Set bot activity
   bot.user?.setPresence({
     status: "online",
     activities: [{
-        name: environment === "production" || environment === "prod" ? "/help" : "in dev mode",
+        name: environment === "production" ? "/help" : "in dev mode",
         type: Discord.ActivityType.Playing
     }]
   });
@@ -81,12 +89,11 @@ bot.on("interactionCreate", async (interaction) => {
   if (command) {
     console.log(`Command "${command.name}" used by ${interaction.user.tag}`);
     try {
-      await command.executor(interaction, bot, player);
+      await command.executor(interaction, bot);
     }
-    catch (e) {
-      interaction.reply({ content: "Error executing command.", ephemeral: true });
+    catch (err) {
       console.log("Error executing command");
-      console.log(e);
+      console.log(err);
     }
   }
   else {
@@ -109,12 +116,13 @@ bot.on("guildMemberAdd", async (member) => {
   await channel.send({ embeds: [memberEmbed] });
 });
 
-// Music player
-const player = new Player(bot, {
-  ytdlOptions: {
-    quality: "highestaudio",
-    highWaterMark: 1 << 25
-  }
+player.events.on("error", (queue, err) => {
+  // Emitted when the player queue encounters error
+  console.error(err);
+});
+player.events.on("playerError", (queue, err) => {
+  // Emitted when the audio player errors while streaming audio track
+  console.error(err);
 });
 
 // Login bot
