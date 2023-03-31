@@ -1,12 +1,12 @@
-import SData from "simple-data-storage";
 import { ApplicationCommandOptionType } from "discord.js";
+import { useMasterPlayer } from "discord-player";
 import { CommandDefinition } from "../../types/CommandDefinition";
 import { Category } from "../../constants";
 
 export const filter: CommandDefinition = {
   name: "filter",
-  description: "Enable, disable, or list music filters",
-  commandDisplay: "filter <name>? <on/off>?",
+  description: "Toggle filter, or list active music filters",
+  commandDisplay: "filter <name>?",
   category: Category.AUDIO,
   options: [
     {
@@ -16,79 +16,70 @@ export const filter: CommandDefinition = {
       type: ApplicationCommandOptionType.String,
       choices: [{ name: "nightcore",  value: "nightcore"},
                 { name: "vaporwave", value: "vaporwave" },
-                { name: "reverse", value: "reverse" },
                 { name: "karaoke", value: "karaoke" },
+                { name: "lofi", value: "lofi" },
+                { name: "vibrato", value: "vibrato" },
                 { name: "tremolo", value: "tremolo" },
-                { name: "gate", value: "gate" }]
-    },
-    {
-      name: "toggle",
-      description: "Enable or disable filter",
-      required: false,
-      type: ApplicationCommandOptionType.String,
-      choices: [{ name: "on",  value: "true" },
-                { name: "off", value: "false" }]
-    },
+                { name: "bassboost", value: "bassboost" },
+                { name: "surrounding", value: "surrounding" }]
+    }
   ],
-  executor: async (interaction, bot, player) => {
+  executor: async (interaction) => {
+
+    const player = useMasterPlayer();
 
     if (!player || !interaction.guildId) {
       return;
     }
+    await interaction.deferReply();
 
-    const queue = player.getQueue(interaction.guildId);
+    const queue = player.nodes.get(interaction.guildId);
     if (!queue) {
-      return interaction.reply("There are no songs in the queue.");
+      return interaction.editReply("There are no songs in the queue.");
     }
 
-    // Check included commands. If only "/filter", list the currently enabled filters
-    const filter = interaction.options.getString("name");
-    const toggle: boolean = JSON.parse(interaction.options.getString("toggle")!);
+    const filterName = interaction.options.getString("name");
     
-    if (!filter && toggle === null) {
-      
-      const filters = queue.getFiltersEnabled();
+    // If no name provided - list the currently enabled filters
+    if (!filterName) {
+      const filters = queue.filters.ffmpeg.getFiltersEnabled();
       
       if (filters.length === 0) {
-        return interaction.reply("No filters currently enabled.");
+        return interaction.editReply("No filters currently enabled.");
       }
 
       let filtersString = "";
-      filters.forEach( (filter) => {
+      filters.forEach(filter => {
         filtersString += "- " + filter + "\n";
       });
       
-      return interaction.reply("Filters currently enabled:\n" + filtersString);
-    }
-    else if (!filter && toggle !== null) {
-      return interaction.reply({ content: "You need to provide a filter name.", ephemeral: true });
-    }
-    else if (filter && toggle === null) {
-      return interaction.reply({ content: "You need to specify if filter should be turned on or off.", ephemeral: true });
+      return interaction.editReply("Filters currently enabled:\n" + filtersString);
     }
 
-    let filters = {
-      "nightcore": false,
-      "vaporwave": false,
-      "reverse": false,
-      "karaoke": false,
-      "tremolo": false,
-      "gate": false
-    };
+    const filters = [
+      "nightcore",
+      "vaporwave",
+      "karaoke",
+      "lofi",
+      "vibrato",
+      "tremolo",
+      "bassboost",
+      "surrounding"
+    ] as const;
+    type Filter = typeof filters[number];
 
-    // If first run, save filters object. If not, retrieve it from memory
-    if (SData("filters") === undefined) {
-      SData("filters", filters);
+    // Convert to possible filter type
+    const filterKey = filterName as Filter;
+    
+    try {
+      // Toggle filter
+      await queue.filters.ffmpeg.toggle(filterKey);
+      const toggled = queue.filters.ffmpeg.getFiltersEnabled().includes(filterKey);
+
+      return interaction.editReply(`Filter ${filterKey} has been turned ${toggled ? "on" : "off"}.`);
     }
-    else {
-      filters = SData("filters");
+    catch (err) {
+      console.error(err);
     }
-
-    // Check if filter is valid, and if so set filter
-    const filterKey = filter as keyof typeof filters;
-    filters[filterKey] = toggle;
-    await queue.setFilters(filters);
-
-    return interaction.reply(`Filter ${filter} has been turned ${toggle ? "on" : "off"}.`);
   }
 };

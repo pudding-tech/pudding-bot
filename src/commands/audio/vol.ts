@@ -1,4 +1,5 @@
 import { ApplicationCommandOptionType } from "discord.js";
+import { useMasterPlayer } from "discord-player";
 import { CommandDefinition } from "../../types/CommandDefinition";
 import { Category } from "../../constants";
 
@@ -15,13 +16,15 @@ export const vol: CommandDefinition = {
       type: ApplicationCommandOptionType.Number
     }
   ],
-  executor: async (interaction, bot, player) => {
+  executor: async (interaction) => {
+
+    const player = useMasterPlayer();
 
     if (!player || !interaction.guildId) {
       return;
     }
 
-    const queue = player.getQueue(interaction.guildId);
+    const queue = player.nodes.get(interaction.guildId);
     if (!queue) {
       return interaction.reply("There are no songs in the queue.");
     }
@@ -32,10 +35,10 @@ export const vol: CommandDefinition = {
       if (vol < 0 || vol > 100) {
         return interaction.reply("Please input a volume between 0 and 100");
       }
-      queue.setVolume(vol);
+      queue.node.setVolume(vol);
       return interaction.reply("Volume set to: " + vol + "%");
     }
 
-    return interaction.reply("Currently playing at volume: " + queue.volume + "%");
+    return interaction.reply("Currently playing at volume: " + queue.node.volume + "%");
   }
 };
