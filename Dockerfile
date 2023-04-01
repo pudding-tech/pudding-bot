@@ -6,7 +6,6 @@ WORKDIR /app
 
 # Copy packages file and install dependencies
 COPY package.json ./
-COPY tsconfig.json ./
 RUN npm install
 
 # Copy everything
@@ -17,6 +16,9 @@ RUN npx tsc -p ./
 
 ### FINAL APP ###
 FROM node:18-alpine
+
+# Install ffmpeg
+RUN apk add --no-cache ffmpeg
 
 # Set default environment
 ENV NODE_ENV=production
