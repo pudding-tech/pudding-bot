@@ -64,6 +64,9 @@ export class PlexConnection {
    * Automatically checks servers and updates Discord channel every hour
    */
   run = async () => {
+    if (!this.plexMessage) {
+      return;
+    }
     await this.serversUpdate();
 
     // Run update check every hour
