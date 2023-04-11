@@ -6,7 +6,8 @@ WORKDIR /app
 
 # Copy packages file and install dependencies
 COPY package.json ./
-RUN npm install
+COPY package-lock.json ./
+RUN npm ci
 
 # Copy everything
 COPY ./ ./
@@ -20,12 +21,14 @@ FROM node:18-alpine
 # Install ffmpeg
 RUN apk add --no-cache ffmpeg
 
-# Set default environment
-ENV NODE_ENV=production
+# Set default environment and time zone
+ENV NODE_ENV="production"
+ENV TZ="Europe/Oslo"
 
 WORKDIR /app
 COPY package.json ./
-RUN npm install --omit=dev
+COPY package-lock.json ./
+RUN npm ci --omit=dev
 COPY --from=builder /app/build ./build
 
 # Run build
