@@ -24,7 +24,12 @@ export const debt: CommandDefinition = {
     const events: DebtEvent[] = await fetch("https://pudding-debt-api.hundseth.com/api/events", {
       method: "GET"
     })
-      .then(res => res.json())
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        }
+        return null;
+      })
       .catch(err => console.log(err));
 
     if (!events) {
@@ -40,7 +45,12 @@ export const debt: CommandDefinition = {
     const payments: DebtPayment[] = await fetch("https://pudding-debt-api.hundseth.com/api/payments?eventId=" + event.id, {
       method: "GET"
     })
-      .then(res => res.json())
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        }
+        return null;
+      })
       .catch(err => console.log(err));
 
     if (!payments) {

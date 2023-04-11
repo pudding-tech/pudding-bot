@@ -3,14 +3,14 @@ import Discord from "discord.js";
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v9";
 import { Player } from "discord-player";
+import { PlexConnection } from "./PlexConnection";
 import { commands } from "./commands";
-import { plexConnect } from "./plexConnect";
 import { VERSION, BOT_COLOR, Channels } from "./constants";
 import { getWelcomeMessage } from "./messages/welcomes";
 
 dotenv.config();
 
-const environment = process.env.NODE_ENV || "dev";
+const inProd = process.env.NODE_ENV === "production" ? true : false;
 const puddingbotToken = process.env.PUDDINGBOT_TOKEN;
 const clientId = process.env.PUDDINGBOT_CLIENT_ID;
 const guilds = process.env.GUILD_ID?.split(",");
@@ -45,6 +45,10 @@ guilds.forEach( async (guildId) => {
   console.log("Successfully registered " + commands.length + " commands for server: " + guildId);
 });
 
+// Initialize and export PlexConnection
+const plexConnection = new PlexConnection(bot);
+export { plexConnection };
+
 // Music player
 const player = new Player(bot, {
   ytdlOptions: {
@@ -54,20 +58,20 @@ const player = new Player(bot, {
 });
 
 bot.once("ready", async () => {
-  console.log(`${bot.user?.username} (${environment === "production" ? VERSION : "dev version"}) sucessfully logged in!`);
+  console.log(`${bot.user?.username} (${inProd ? VERSION : "dev version"}) sucessfully logged in!`);
 
   // Set bot activity
   bot.user?.setPresence({
     status: "online",
     activities: [{
-        name: environment === "production" ? "/help" : "in dev mode",
+        name: inProd ? "/help" : "in dev mode",
         type: Discord.ActivityType.Playing
     }]
   });
 
   // Connect to Plex services
   try {
-    plexConnect(bot);
+    await plexConnection.run();
   }
   catch (err) {
     console.log(err);

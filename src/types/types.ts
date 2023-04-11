@@ -42,3 +42,8 @@ export type DebtPaymentSender = {
     amount: number
   }[]
 }
+
+export enum Server {
+  PUDDINGFLIX = "puddingflix",
+  DUCKFLIX = "duckflix"
+}
