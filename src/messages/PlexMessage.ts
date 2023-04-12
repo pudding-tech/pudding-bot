@@ -1,7 +1,7 @@
 import Discord, { EmbedBuilder } from "discord.js";
 import { plexConnection } from "../index";
 import { BOT_COLOR, Channels } from "../constants";
-import { Server } from "../types/types";
+import { Server } from "../constants";
 import { formatDate } from "../utils/formatDate";
 
 export class PlexMessage {
@@ -138,34 +138,31 @@ export class PlexMessage {
    * @param customMessage Optional custom server status message
    */
   private setStatusCustom = (server: Server, status: boolean, customMessage?: string) => {
-    if (!customMessage) {
-      if (status) {
-        customMessage = this.texts.upSubtextStandard;
-      }
-      else {
-        customMessage = this.texts.downSubtextStandard;
-      }
+    let message: string;
+    if (customMessage) {
+      message = "*" + customMessage + "*";
     }
     else {
-      customMessage = "*" + customMessage + "*";
+      if (status) {
+        message = this.texts.upSubtextStandard;
+      }
+      else {
+        message = this.texts.downSubtextStandard;
+      }
     }
 
     if (server === Server.PUDDINGFLIX) {
       this.puddingflixHeader = this.texts.puddingflix + (status ? this.texts.upCheckmark : this.texts.downCheckmark);
-      this.puddingflixSubtext = customMessage;
+      this.puddingflixSubtext = message;
     }
     else if (server === Server.DUCKFLIX) {
       this.duckflixHeader = this.texts.duckflix + (status ? this.texts.upCheckmark : this.texts.downCheckmark);
-      this.duckflixSubtext = customMessage;
+      this.duckflixSubtext = message;
     }
   };
 
   /**
    * Return formatted message embed object
-   * @param puddingflixHeader 
-   * @param puddingflixSub 
-   * @param duckflixHeader 
-   * @param duckflixSub 
    * @returns Embed object
    */
   private plexStatusMsg = () => {

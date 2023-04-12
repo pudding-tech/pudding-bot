@@ -14,3 +14,8 @@ export enum Category {
   ADMIN = "Admin commands",
   HELP = "Help commands"
 }
+
+export enum Server {
+  PUDDINGFLIX = "puddingflix",
+  DUCKFLIX = "duckflix"
+}
