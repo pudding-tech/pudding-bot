@@ -1,6 +1,6 @@
 import Discord from "discord.js";
 import { plexConnection } from "../../index";
-import { Server } from "../../types/types";
+import { Server } from "../../constants";
 
 /**
  * Edit Plex message in services channel
