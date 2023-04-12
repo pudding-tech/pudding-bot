@@ -48,10 +48,10 @@ export const help: CommandDefinition = {
     });
 
     // Set environment version to display
-    const environment = process.env.NODE_ENV === "production" ? VERSION : "dev version";
+    const version = process.env.NODE_ENV === "production" ? VERSION : "dev version";
 
     const helpEmbed = new EmbedBuilder({
-      title: `PuddingBot  \`${environment}\``,
+      title: `PuddingBot  \`${version}\``,
       description: "PuddingBot is a Discord bot serving the Puddings Discord server. See below for a list of available commands. " +
         "The source code is available in the PuddingTech organization on GitHub (see /git command). " +
         "All puddings are welcome to contribute to the bot. Have fun!\n\n**Available commands:**",

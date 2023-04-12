@@ -1,5 +1,6 @@
 import Discord from "discord.js";
-import { plexMessage } from "../plexMessage";
+import { plexConnection } from "../../index";
+import { Server } from "../../constants";
 
 /**
  * Edit Plex message in services channel
@@ -8,20 +9,23 @@ import { plexMessage } from "../plexMessage";
  */
 export const editPlexMessage = async (bot: Discord.Client, interaction: Discord.ChatInputCommandInteraction) => {
 
-  const server = interaction.options.getString("server");
+  const serverText = interaction.options.getString("server");
   const operational = interaction.options.getNumber("operational");
 
   const status: boolean = operational ? true : false;
-  let serverSelect: Array<boolean | null> = [];
+  let server: Server;
 
-  if (server === "puddingflix") {
-    serverSelect = [status, null];
+  if (serverText === "puddingflix") {
+    server = Server.PUDDINGFLIX;
   }
-  else if (server === "duckflix") {
-    serverSelect = [null, status];
+  else if (serverText === "duckflix") {
+    server = Server.DUCKFLIX;
+  }
+  else {
+    return;
   }
 
-  const customStatus = interaction.options.getString("custom_status") || undefined;
+  const customMessage = interaction.options.getString("custom_status") ?? undefined;
 
   // Allow only Plex administrators
   if (interaction.user.id !== "110276423779897344" && interaction.user.id !== "111967042424274944") {
@@ -29,11 +33,11 @@ export const editPlexMessage = async (bot: Discord.Client, interaction: Discord.
   }
   
   try {
-    await plexMessage(bot, serverSelect, false, customStatus);
+    await plexConnection.plexMessage?.updateCustom(server, status, customMessage);
     return interaction.reply({ content: "You have successfully edited the Plex services message", ephemeral: true });
   }
-  catch (e) {
-    console.error(e);
+  catch (err) {
+    console.error(err);
     return interaction.reply({ content: "Something went wrong :(", ephemeral: true });
   }
 };

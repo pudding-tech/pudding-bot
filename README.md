@@ -1,6 +1,6 @@
 # PuddingBot - Discord bot
 
-PuddingBot serves the discord server Puddings.
+PuddingBot serves the Discord server Puddings.
 
 ### Environment variables
 
@@ -11,8 +11,7 @@ PuddingBot serves the discord server Puddings.
 
 **Optional:**
 > NODE_ENV  
-
-**Plex specific (optional):**  
+> TZ  
 > PLEX_CLIENT_IDENTIFIER  
 > PUDDINGFLIX_IP  
 > PUDDINGFLIX_PORT  
