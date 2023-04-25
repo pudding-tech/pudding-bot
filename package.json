@@ -1,6 +1,6 @@
 {
   "name": "pudding_bot",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "PuddingBot serves the discord server Puddings",
   "scripts": {
     "build": "tsc --project ./",

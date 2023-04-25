@@ -1,4 +1,4 @@
-export const VERSION = "v1.4.0";
+export const VERSION = "v1.4.1";
 export const BOT_COLOR = 0xc292d4;
 
 export enum Channels {

@@ -24,13 +24,20 @@ export class PlexConnection {
 
     PlexConnection.instance = this;
     this.bot = bot;
+    this.plexMessage = new PlexMessage(this.bot);
+  }
 
+  /**
+   * Runs Plex connection. 
+   * Automatically checks servers and updates Discord channel every hour
+   */
+  run = async () => {
     if (!process.env.PUDDINGFLIX_IP || !process.env.PUDDINGFLIX_PORT || !process.env.PUDDINGFLIX_TOKEN || !process.env.PLEX_CLIENT_IDENTIFIER) {
-      console.log("Missing Puddingflix environment variables. Will not attempt to connect to Plex services.");
+      console.log("Missing Puddingflix environment variables - will not attempt to connect to Plex services.");
       return;
     }
     if (!process.env.DUCKFLIX_IP || !process.env.DUCKFLIX_PORT || !process.env.DUCKFLIX_TOKEN || !process.env.PLEX_CLIENT_IDENTIFIER) {
-      console.log("Missing Duckflix environment variables. Will not attempt to connect to Plex services.");
+      console.log("Missing Duckflix environment variables - will not attempt to connect to Plex services.");
       return;
     }
 
@@ -56,17 +63,6 @@ export class PlexConnection {
       }
     });
 
-    this.plexMessage = new PlexMessage(this.bot);
-  }
-
-  /**
-   * Runs Plex connection. 
-   * Automatically checks servers and updates Discord channel every hour
-   */
-  run = async () => {
-    if (!this.plexMessage) {
-      return;
-    }
     await this.serversUpdate();
 
     // Run update check every hour
@@ -108,13 +104,16 @@ export class PlexConnection {
       console.log("Could not connect to Duckflix");
     }
 
-    if (puddingflix !== this.puddingflix) {
+    const puddingflixChanged = puddingflix === this.puddingflix ? false : true;
+    const duckflixChanged = duckflix === this.duckflix ? false : true;
+
+    if (puddingflixChanged && this.puddingflix) {
       console.log("Puddingflix status changed at " + new Date());
     }
-    if (duckflix !== this.duckflix) {
+    if (duckflixChanged && this.duckflix) {
       console.log("Duckflix status changed at " + new Date());
     }
-    if (puddingflix === this.puddingflix && duckflix === this.duckflix) {
+    if (!puddingflixChanged && !duckflixChanged) {
       console.log("No plex status changes - " + new Date());
     }
 
@@ -123,8 +122,8 @@ export class PlexConnection {
         await this.plexMessage.update(
           puddingflix,
           duckflix,
-          puddingflix === this.puddingflix ? false : true,
-          duckflix === this.duckflix ? false : true
+          puddingflixChanged,
+          duckflixChanged
         );
       }
       catch (err) {
