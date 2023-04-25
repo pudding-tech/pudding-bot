@@ -1,11 +1,11 @@
 
 export const formatDate = (date: Date) => {
-  return date.toLocaleDateString("no-NO", {
+  return date.toLocaleDateString("en-GB", {
     timeZoneName: "short",
     day: "2-digit",
-    month: "2-digit",
-    year: "2-digit",
+    month: "long",
+    year: "numeric",
     hour: "numeric",
     minute: "numeric"
-  }).replace(",", "");
+  }).replace("at", "");
 };
