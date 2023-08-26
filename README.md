@@ -1,4 +1,5 @@
 # PuddingBot - Discord bot
+[![GitHub latest release version](https://img.shields.io/github/v/release/pudding-tech/pudding-bot.svg)](https://github.com/pudding-tech/pudding-bot/releases/latest)
 
 PuddingBot serves the Discord server Puddings.
 
