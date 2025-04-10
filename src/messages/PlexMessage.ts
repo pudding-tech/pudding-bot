@@ -168,7 +168,7 @@ export class PlexMessage {
   private plexStatusMsg = () => {
     return new EmbedBuilder({
       title: "Current status of Plex servers",
-      description: "Last updated: **" + formatDate(new Date()) + "**\n\nSee which Plex servers are currently operational. This post is automatically updated every hour.\n\u200b",
+      description: "Last updated: **" + formatDate(new Date()) + "**\n\nCheck which Plex servers are currently operational. This post updates automatically every hour.\n\u200b",
       fields: [
         {
           name: this.puddingflixHeader,
@@ -177,6 +177,12 @@ export class PlexMessage {
         {
           name: this.duckflixHeader,
           value: this.duckflixSubtext
+        },
+        {
+          name: "\u200b",
+          value: "For more detailed information:\n" +
+            `- ${process.env.PUDDINGFLIX_INFO_URL}\n` +
+            `- ${process.env.DUCKFLIX_INFO_URL}`
         },
         {
           name: "\u200b",

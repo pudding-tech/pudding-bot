@@ -9,7 +9,7 @@ export const puddingtech: CommandDefinition = {
   executor: async (interaction) => {
     const puddingtechEmbed = new EmbedBuilder({
       title: "Puddingtech GitHub page",
-      url: "https://github.com/Pudding-Tech",
+      url: "https://github.com/pudding-tech",
       description: "Click to go to Puddingtech organization page on GitHub.",
       color: BOT_COLOR
     });
