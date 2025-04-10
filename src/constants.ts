@@ -1,4 +1,6 @@
-export const VERSION = "v1.4.1";
+import { version } from "../package.json";
+
+export const VERSION = `v${version}`;
 export const BOT_COLOR = 0xc292d4;
 
 export enum Channels {

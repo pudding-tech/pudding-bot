@@ -1,14 +1,12 @@
 import Discord from "discord.js";
-import PlexAPI from "plex-api";
 import { Cron } from "croner";
+import { DOMParser } from "@xmldom/xmldom";
 import { PlexMessage } from "./messages/PlexMessage";
 
 export class PlexConnection {
 
   static instance: PlexConnection;
   private bot: Discord.Client | null = null;
-  private plexClientPuddingflix: any;
-  private plexClientDuckflix: any;
   private puddingflix: boolean | null = null;
   private duckflix: boolean | null = null;
   plexMessage: PlexMessage | null = null;
@@ -32,41 +30,19 @@ export class PlexConnection {
    * Automatically checks servers and updates Discord channel every hour
    */
   run = async () => {
-    if (!process.env.PUDDINGFLIX_IP || !process.env.PUDDINGFLIX_PORT || !process.env.PUDDINGFLIX_TOKEN || !process.env.PLEX_CLIENT_IDENTIFIER) {
+    if (!process.env.PUDDINGFLIX_HOST || !process.env.PUDDINGFLIX_PORT) {
       console.log("Missing Puddingflix environment variables - will not attempt to connect to Plex services.");
       return;
     }
-    if (!process.env.DUCKFLIX_IP || !process.env.DUCKFLIX_PORT || !process.env.DUCKFLIX_TOKEN || !process.env.PLEX_CLIENT_IDENTIFIER) {
+    if (!process.env.DUCKFLIX_HOST || !process.env.DUCKFLIX_PORT) {
       console.log("Missing Duckflix environment variables - will not attempt to connect to Plex services.");
       return;
     }
 
-    // Connect to Puddingflix
-    this.plexClientPuddingflix = new PlexAPI({
-      hostname: process.env.PUDDINGFLIX_IP,
-      port: process.env.PUDDINGFLIX_PORT,
-      token: process.env.PUDDINGFLIX_TOKEN,
-      options: {
-        identifier: process.env.PLEX_CLIENT_IDENTIFIER,
-        deviceName: "PuddingBot"
-      }
-    });
-
-    // Connect to Duckflix
-    this.plexClientDuckflix = new PlexAPI({
-      hostname: process.env.DUCKFLIX_IP,
-      port: process.env.DUCKFLIX_PORT,
-      token: process.env.DUCKFLIX_TOKEN,
-      options: {
-        identifier: process.env.PLEX_CLIENT_IDENTIFIER,
-        deviceName: "PuddingBot"
-      }
-    });
-
     await this.serversUpdate();
 
     // Run update check every hour
-    Cron("0 * * * *", { timezone: "Europe/Oslo" }, async () => {
+    new Cron("0 * * * *", { timezone: "Europe/Oslo" }, async () => {
       await this.serversUpdate();
     });
   };
@@ -85,24 +61,10 @@ export class PlexConnection {
     let duckflix = false;
 
     // Check if Puddingflix is online
-    try {
-      const result = await this.plexClientPuddingflix.query("/");
-      console.log("Plex Media Server '" + result.MediaContainer.friendlyName + "' is running, version " + result.MediaContainer.version);
-      puddingflix = true;
-    }
-    catch (e) {
-      console.log("Could not connect to Puddingflix");
-    }
+    puddingflix = await this.checkServerStatus("Puddingflix", process.env.PUDDINGFLIX_HOST!, process.env.PUDDINGFLIX_PORT!);
 
     // Check if Duckflix is online
-    try {
-      const result = await this.plexClientDuckflix.query("/");
-      console.log("Plex Media Server '" + result.MediaContainer.friendlyName + "' is running, version " + result.MediaContainer.version);
-      duckflix = true;
-    }
-    catch (e) {
-      console.log("Could not connect to Duckflix");
-    }
+    duckflix = await this.checkServerStatus("Duckflix", process.env.DUCKFLIX_HOST!, process.env.DUCKFLIX_PORT!);
 
     const puddingflixChanged = puddingflix === this.puddingflix ? false : true;
     const duckflixChanged = duckflix === this.duckflix ? false : true;
@@ -133,5 +95,34 @@ export class PlexConnection {
 
     this.puddingflix = puddingflix;
     this.duckflix = duckflix;
+  };
+
+  private checkServerStatus = async (serverName: string, host: string, port: string) => {
+    try {
+      const res = await fetch(`https://${host}:${port}/identity`, { method: "GET" });
+      if (!res.ok) {
+        throw new Error(`${serverName} server responded with status ${res.status}`);
+      }
+
+      const contentType = res.headers.get("content-type");
+      if (!contentType || !contentType.includes("text/xml")) {
+        throw new Error(`${serverName} server did not respond with XML content type`);
+      }
+
+      const xmlText = await res.text();
+      const doc = new DOMParser().parseFromString(xmlText, "text/xml");
+      const version = doc.getElementsByTagName("MediaContainer")[0]?.getAttribute("version");
+      if (!version) {
+        throw new Error(`Could not find version attribute in ${serverName} XML response`);
+      }
+
+      console.log(`Plex Media Server '${serverName}' is running, version ${version}`);
+      return true;
+    }
+    catch (err){
+      console.error(`Could not connect to ${serverName}`);
+      console.error(err);
+      return false;
+    }
   };
 }
