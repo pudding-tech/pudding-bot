@@ -1,6 +1,6 @@
-import { CommandDefinition } from "../types/CommandDefinition";
 import { EmbedBuilder, ApplicationCommandOptionType } from "discord.js";
-import { BOT_COLOR, Category } from "../constants";
+import { CommandDefinition } from "../types/CommandDefinition.ts";
+import { BOT_COLOR, Category } from "../constants.ts";
 
 export const avatar: CommandDefinition = {
   name: "avatar",
@@ -16,7 +16,6 @@ export const avatar: CommandDefinition = {
     }
   ],
   executor: async (interaction) => {
-
     const user = interaction.options.getUser("user") ||  interaction.user;
 
     const avatarEmbed = new EmbedBuilder({
@@ -26,10 +25,12 @@ export const avatar: CommandDefinition = {
       color: BOT_COLOR
     });
 
-    if (user === interaction.options.getUser("user"))
+    if (user === interaction.options.getUser("user")) {
       avatarEmbed.setTitle(user.tag);
-    else
+    }
+    else {
       avatarEmbed.setTitle(interaction.user.tag);
+    }
 
     return interaction.reply({ embeds: [avatarEmbed] });
   }

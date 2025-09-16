@@ -1,12 +1,12 @@
-import Discord, { EmbedBuilder } from "discord.js";
-import { plexConnection } from "../index";
-import { BOT_COLOR, Channels } from "../constants";
-import { Server } from "../constants";
-import { formatDate } from "../utils/formatDate";
+import { Client, EmbedBuilder, TextChannel } from "discord.js";
+import { plexConnection } from "../index.ts";
+import { BOT_COLOR, Channels } from "../constants.ts";
+import { Server } from "../constants.ts";
+import { formatDate } from "../utils/formatDate.ts";
 
 export class PlexMessage {
 
-  private bot: Discord.Client;
+  private bot: Client;
   private puddingflixHeader = "";
   private puddingflixSubtext = "";
   private duckflixHeader = "";
@@ -24,7 +24,7 @@ export class PlexMessage {
    * Handle and send/update Plex status message in services channel
    * @param bot 
    */
-  constructor(bot: Discord.Client) {
+  constructor(bot: Client) {
     this.bot = bot;
   }
 
@@ -71,7 +71,7 @@ export class PlexMessage {
    * Get 'services' Discord channel
    */
   private getServicesChannel = async () => {
-    const channel = await this.bot.channels.fetch(Channels.SERVICES_CHANNEL) as Discord.TextChannel;
+    const channel = await this.bot.channels.fetch(Channels.SERVICES_CHANNEL) as TextChannel;
     return channel;
   };
 
@@ -79,7 +79,7 @@ export class PlexMessage {
    * Create or edit Plex message in Discord channel
    * @param channel Channel to send/edit message in
    */
-  private sendMessage = async (channel: Discord.TextChannel) => {
+  private sendMessage = async (channel: TextChannel) => {
 
     // Get all messages for the channel, send new if channel is empty, or edit message if not
     const messages = await channel.messages.fetch();

@@ -1,6 +1,6 @@
-import { useMasterPlayer } from "discord-player";
-import { CommandDefinition } from "../../types/CommandDefinition";
-import { Category } from "../../constants";
+import { useMainPlayer } from "discord-player";
+import { CommandDefinition } from "../../types/CommandDefinition.ts";
+import { Category } from "../../constants.ts";
 
 export const stop: CommandDefinition = {
   name: "stop",
@@ -8,7 +8,7 @@ export const stop: CommandDefinition = {
   category: Category.AUDIO,
   executor: async (interaction) => {
 
-    const player = useMasterPlayer();
+    const player = useMainPlayer();
 
     if (!player || !interaction.guildId) {
       return;

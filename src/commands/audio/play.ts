@@ -1,12 +1,12 @@
 import { ApplicationCommandOptionType } from "discord.js";
-import { CommandDefinition } from "../../types/CommandDefinition";
 import { EmbedBuilder } from "discord.js";
-import { QueryType, useMasterPlayer } from "discord-player";
-import { BOT_COLOR, Category } from "../../constants";
+import { QueryType, useMainPlayer } from "discord-player";
+import { CommandDefinition } from "../../types/CommandDefinition.ts";
+import { BOT_COLOR, Category } from "../../constants.ts";
 
 export const play: CommandDefinition = {
   name: "play",
-  description: "Play audio from a YouTube, Spotify or SoundCloud link",
+  description: "Play audio from a SoundCloud link",
   commandDisplay: "play <url>",
   category: Category.AUDIO,
   options: [
@@ -19,7 +19,7 @@ export const play: CommandDefinition = {
   ],
   executor: async (interaction, bot) => {
 
-    const player = useMasterPlayer();
+    const player = useMainPlayer();
 
     if (!player || !interaction.guild) {
       return;
@@ -40,10 +40,11 @@ export const play: CommandDefinition = {
     // Check if command includes music link
     const url = interaction.options.getString("url");
     if (!url?.length) {
-      return interaction.editReply({ content: "Please provide a link for the music to play. YouTube, Spotify and SoundCloud are supported." });
+      return interaction.editReply({ content: "Please provide a link for the music to play. SoundCloud is supported." });
     }
     
     // Create (or get) queue
+    // @ts-expect-error: Discord.js Guild type mismatch due to ESM/CJS
     const queue = player.nodes.create(interaction.guild, {
       metadata: {
         channel: interaction.channel,
@@ -55,6 +56,7 @@ export const play: CommandDefinition = {
     });
     try {
       if (!queue.connection) {
+        // @ts-expect-error: Discord.js Client type mismatch due to ESM/CJS
         await queue.connect(voiceChannel);
       }
     }
@@ -65,24 +67,31 @@ export const play: CommandDefinition = {
     }
 
     const result = await player.search(url, {
+      // @ts-expect-error: Discord.js Client type mismatch due to ESM/CJS hazard
       requestedBy: interaction.user,
       searchEngine: QueryType.AUTO
-    })
-      .catch(err => console.error(err));
+    }).catch(err => console.error(err));
 
-    if (!result || result.tracks.length === 0) {
-      return interaction.editReply({ content: "Video not found. Please provide a proper URL." });
+    if (!result || !result.hasTracks()) {
+      return interaction.editReply({ content: "Music not found. Please provide a proper URL." });
     }
+
+    // acquire task entry
+    const entry = queue.tasksQueue.acquire();
+
+    // wait for previous task to be released and our task to be resolved
+    await entry.getTask();
 
     const song = result.tracks[0];
     queue.addTrack(song);
 
     if (!queue.node.isPlaying()) {
-      queue.node.play();
+      await queue.node.play();
     }
+    queue.tasksQueue.release();
 
     const musicEmbed = new EmbedBuilder({
-      title: `**${song.title}** has been added to the queue`,
+      title: `**${song.title}**\nhas been added to the queue`,
       thumbnail: {
         url: song.thumbnail
       },

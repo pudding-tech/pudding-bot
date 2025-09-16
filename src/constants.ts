@@ -1,6 +1,6 @@
-import { version } from "../package.json";
+import packageJson from "../package.json" with { type: "json" };
 
-export const VERSION = `v${version}`;
+export const VERSION = `v${packageJson.version}`;
 export const BOT_COLOR = 0xc292d4;
 
 export enum Channels {

@@ -1,7 +1,19 @@
 import { ApplicationCommandOptionType } from "discord.js";
-import { useMasterPlayer } from "discord-player";
-import { CommandDefinition } from "../../types/CommandDefinition";
-import { Category } from "../../constants";
+import { useMainPlayer } from "discord-player";
+import { CommandDefinition } from "../../types/CommandDefinition.ts";
+import { Category } from "../../constants.ts";
+
+const filters = [
+  "nightcore",
+  "vaporwave",
+  "karaoke",
+  "lofi",
+  "vibrato",
+  "tremolo",
+  "bassboost",
+  "surrounding"
+] as const;
+type Filter = typeof filters[number];
 
 export const filter: CommandDefinition = {
   name: "filter",
@@ -14,19 +26,12 @@ export const filter: CommandDefinition = {
       description: "Name of filter",
       required: false,
       type: ApplicationCommandOptionType.String,
-      choices: [{ name: "nightcore",  value: "nightcore"},
-                { name: "vaporwave", value: "vaporwave" },
-                { name: "karaoke", value: "karaoke" },
-                { name: "lofi", value: "lofi" },
-                { name: "vibrato", value: "vibrato" },
-                { name: "tremolo", value: "tremolo" },
-                { name: "bassboost", value: "bassboost" },
-                { name: "surrounding", value: "surrounding" }]
+      choices: [filters.map(f => ({ name: f, value: f }))].flat()
     }
   ],
   executor: async (interaction) => {
 
-    const player = useMasterPlayer();
+    const player = useMainPlayer();
 
     if (!player || !interaction.guildId) {
       return;
@@ -38,8 +43,9 @@ export const filter: CommandDefinition = {
       return interaction.editReply("There are no songs in the queue.");
     }
 
-    const filterName = interaction.options.getString("name");
-    
+    const name = interaction.options.getString("name");
+    const filterName = filters.includes(name as Filter) ? (name as Filter) : null;
+
     // If no name provided - list the currently enabled filters
     if (!filterName) {
       const filters = queue.filters.ffmpeg.getFiltersEnabled();
@@ -56,27 +62,12 @@ export const filter: CommandDefinition = {
       return interaction.editReply("Filters currently enabled:\n" + filtersString);
     }
 
-    const filters = [
-      "nightcore",
-      "vaporwave",
-      "karaoke",
-      "lofi",
-      "vibrato",
-      "tremolo",
-      "bassboost",
-      "surrounding"
-    ] as const;
-    type Filter = typeof filters[number];
-
-    // Convert to possible filter type
-    const filterKey = filterName as Filter;
-    
     try {
       // Toggle filter
-      await queue.filters.ffmpeg.toggle(filterKey);
-      const toggled = queue.filters.ffmpeg.getFiltersEnabled().includes(filterKey);
+      await queue.filters.ffmpeg.toggle(filterName);
+      const toggled = queue.filters.ffmpeg.getFiltersEnabled().includes(filterName);
 
-      return interaction.editReply(`Filter ${filterKey} has been turned ${toggled ? "on" : "off"}.`);
+      return interaction.editReply(`Filter ${filterName} has been turned ${toggled ? "on" : "off"}.`);
     }
     catch (err) {
       console.error(err);

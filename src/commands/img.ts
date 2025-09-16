@@ -1,7 +1,7 @@
-import { CommandDefinition } from "../types/CommandDefinition";
 import { EmbedBuilder, ApplicationCommandOptionType } from "discord.js";
-import { BOT_COLOR, Category } from "../constants";
-import { images } from "../images";
+import { CommandDefinition } from "../types/CommandDefinition.ts";
+import { BOT_COLOR, Category } from "../constants.ts";
+import { images } from "../images.ts";
 
 export const img: CommandDefinition = {
   name: "img",
