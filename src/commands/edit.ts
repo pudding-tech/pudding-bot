@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionType } from "discord.js";
-import { CommandDefinition } from "../types/CommandDefinition";
-import { Category } from "../constants";
-import { editPlexMessage } from "../messages/edits/editPlexMessage";
+import { CommandDefinition } from "../types/CommandDefinition.ts";
+import { Category } from "../constants.ts";
+import { editPlexMessage } from "../messages/edits/editPlexMessage.ts";
 
 export const edit: CommandDefinition = {
   name: "edit",

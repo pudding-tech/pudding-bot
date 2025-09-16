@@ -1,7 +1,7 @@
-import { useMasterPlayer } from "discord-player";
-import { CommandDefinition } from "../../types/CommandDefinition";
 import { EmbedBuilder } from "discord.js";
-import { BOT_COLOR, Category } from "../../constants";
+import { useMainPlayer } from "discord-player";
+import { CommandDefinition } from "../../types/CommandDefinition.ts";
+import { BOT_COLOR, Category } from "../../constants.ts";
 
 export const queue: CommandDefinition = {
   name: "queue",
@@ -9,7 +9,7 @@ export const queue: CommandDefinition = {
   category: Category.AUDIO,
   executor: async (interaction) => {
 
-    const player = useMasterPlayer();
+    const player = useMainPlayer();
 
     if (!player || !interaction.guildId) {
       return;

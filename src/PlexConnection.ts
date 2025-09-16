@@ -1,12 +1,12 @@
-import Discord from "discord.js";
+import { Client } from "discord.js";
 import { Cron } from "croner";
 import { DOMParser } from "@xmldom/xmldom";
-import { PlexMessage } from "./messages/PlexMessage";
+import { PlexMessage } from "./messages/PlexMessage.ts";
 
 export class PlexConnection {
 
   static instance: PlexConnection;
-  private bot: Discord.Client | null = null;
+  private bot: Client | null = null;
   private puddingflix: boolean | null = null;
   private duckflix: boolean | null = null;
   plexMessage: PlexMessage | null = null;
@@ -14,7 +14,7 @@ export class PlexConnection {
   /**
    * PlexConnection singleton. Use `run` to start server check
    */
-  constructor(bot: Discord.Client) {
+  constructor(bot: Client) {
     if (PlexConnection.instance) {
       console.log("PlexConnection singleton cannot be instantiated more than once - returning same instance");
       return PlexConnection.instance;

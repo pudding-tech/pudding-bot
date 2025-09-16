@@ -1,31 +1,36 @@
 {
   "name": "pudding_bot",
-  "version": "1.5.0-alpha",
+  "version": "1.5.0",
+  "type": "module",
   "description": "PuddingBot serves the discord server Puddings",
+  "private": true,
   "scripts": {
     "build": "tsc --project ./",
-    "start": "npx ts-node src/index.ts",
+    "start": "tsx src/index.ts",
     "startbuild": "node build/index.js",
     "dev": "concurrently --raw \"tsx watch src/index.ts\" \"tsc --noEmit --watch\""
   },
   "dependencies": {
-    "@discordjs/opus": "^0.9.0",
-    "@discordjs/rest": "^1.7.0",
-    "@discordjs/voice": "^0.15.0",
+    "@discord-player/extractor": "^7.1.0",
+    "@discordjs/voice": "^0.19.0",
     "@xmldom/xmldom": "^0.9.5",
-    "croner": "^9.0.0",
-    "discord-api-types": "^0.37.38",
-    "discord-player": "^6.1.1",
-    "discord.js": "^14.9.0",
-    "dotenv": "^16.4.7"
+    "croner": "^9.1.0",
+    "discord-player": "^7.1.0",
+    "discord.js": "^14.22.1",
+    "dotenv": "^17.2.2",
+    "mediaplex": "^1.0.0"
   },
   "devDependencies": {
-    "@types/node": "^22.14.0",
-    "@typescript-eslint/eslint-plugin": "^8.29.1",
-    "@typescript-eslint/parser": "^8.29.1",
-    "concurrently": "^9.1.2",
-    "eslint": "^9.24.0",
-    "tsx": "^4.19.3",
-    "typescript": "^5.8.3"
-  }
+    "@eslint/js": "^9.35.0",
+    "@types/node": "^24.5.0",
+    "concurrently": "^9.2.1",
+    "eslint": "^9.35.0",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2",
+    "typescript-eslint": "^8.44.0"
+  },
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "license": "GPL-3.0-or-later"
 }

@@ -1,14 +1,13 @@
 import dotenv from "dotenv";
-import Discord from "discord.js";
-import { REST } from "@discordjs/rest";
-import { Routes } from "discord-api-types/v9";
+import { ActivityType, Client, EmbedBuilder, Events, GatewayIntentBits, REST, Routes, TextChannel} from "discord.js";
 import { Player } from "discord-player";
-import { PlexConnection } from "./PlexConnection";
-import { commands } from "./commands";
-import { VERSION, BOT_COLOR, Channels } from "./constants";
-import { getWelcomeMessage } from "./messages/welcomes";
+import { DefaultExtractors } from "@discord-player/extractor";
+import { PlexConnection } from "./PlexConnection.ts";
+import { commands } from "./commands.ts";
+import { VERSION, BOT_COLOR, Channels } from "./constants.ts";
+import { getWelcomeMessage } from "./messages/welcomes.ts";
 
-dotenv.config();
+dotenv.config({ quiet: true });
 
 const inProd = process.env.NODE_ENV === "production" ? true : false;
 const puddingbotToken = process.env.PUDDINGBOT_TOKEN;
@@ -28,44 +27,40 @@ if (!guilds) {
   process.exit(0);
 }
 
-const bot = new Discord.Client({
+const client = new Client({
   intents: [
-    Discord.GatewayIntentBits.Guilds,
-    Discord.GatewayIntentBits.GuildMessages,
-    Discord.GatewayIntentBits.GuildMembers,
-    Discord.GatewayIntentBits.GuildVoiceStates
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.GuildMembers,
+    GatewayIntentBits.GuildVoiceStates
   ]
 });
 
 // Register commands to Discord servers via API
-const rest = new REST({ version: "9"}).setToken(puddingbotToken);
+const rest = new REST({ version: "10" }).setToken(puddingbotToken);
 
-guilds.forEach( async (guildId) => {
-  await rest.put(Routes.applicationGuildCommands(clientId, guildId), {body: commands});
+guilds.forEach(async (guildId) => {
+  await rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands });
   console.log("Successfully registered " + commands.length + " commands for server: " + guildId);
 });
 
-// Initialize and export PlexConnection
-const plexConnection = new PlexConnection(bot);
-export { plexConnection };
+// Initialize PlexConnection
+const plexConnection = new PlexConnection(client);
 
 // Music player
-const player = new Player(bot, {
-  ytdlOptions: {
-    quality: "highestaudio",
-    highWaterMark: 1 << 25
-  }
-});
+// @ts-expect-error: Discord.js Client type mismatch due to ESM/CJS
+const player = new Player(client);
+await player.extractors.loadMulti(DefaultExtractors);
 
-bot.once("ready", async () => {
-  console.log(`${bot.user?.username} (${inProd ? VERSION : "dev version"}) sucessfully logged in!`);
+client.once(Events.ClientReady, async (readyClient) => {
+  console.log(`${readyClient.user?.username} (${inProd ? VERSION : "dev version"}) sucessfully logged in!`);
 
   // Set bot activity
-  bot.user?.setPresence({
+  readyClient.user?.setPresence({
     status: "online",
     activities: [{
-        name: inProd ? "/help" : "in dev mode",
-        type: Discord.ActivityType.Playing
+      name: inProd ? "/help" : "in dev mode",
+      type: ActivityType.Playing
     }]
   });
 
@@ -78,22 +73,23 @@ bot.once("ready", async () => {
   }
 });
 
-bot.on("disconnect", () => {
-  console.log(bot.user?.username + " has logged out...");
+client.on("disconnect", () => {
+  console.log(client.user?.username + " has logged out...");
 });
 
 // Interactions
-bot.on("interactionCreate", async (interaction) => {
+client.on(Events.InteractionCreate, async (interaction) => {
 
-  if (!interaction.isChatInputCommand())
+  if (!interaction.isChatInputCommand()) {
     return;
+  }
 
   const command = commands.find(cmd => cmd.name === interaction.commandName);
-  
+
   if (command) {
     console.log(`Command "${command.name}" used by ${interaction.user.tag}`);
     try {
-      await command.executor(interaction, bot);
+      await command.executor(interaction, client);
     }
     catch (err) {
       console.log("Error executing command");
@@ -107,10 +103,10 @@ bot.on("interactionCreate", async (interaction) => {
 });
 
 // New user joins server
-bot.on("guildMemberAdd", async (member) => {
-  const channel = await member.guild.channels.fetch(Channels.GENERAL_CHANNEL) as Discord.TextChannel;
+client.on(Events.GuildMemberAdd, async (member) => {
+  const channel = await member.guild.channels.fetch(Channels.GENERAL_CHANNEL) as TextChannel;
 
-  const memberEmbed = new Discord.EmbedBuilder({
+  const memberEmbed = new EmbedBuilder({
     title: "Welcome to Puddings!",
     description: getWelcomeMessage(member.user),
     image: { url: member.user.avatarURL() || ""},
@@ -120,14 +116,16 @@ bot.on("guildMemberAdd", async (member) => {
   await channel.send({ embeds: [memberEmbed] });
 });
 
-player.events.on("error", (queue, err) => {
+player.events.on("error", (_queue, err) => {
   // Emitted when the player queue encounters error
   console.error(err);
 });
-player.events.on("playerError", (queue, err) => {
+player.events.on("playerError", (_queue, err) => {
   // Emitted when the audio player errors while streaming audio track
   console.error(err);
 });
 
 // Login bot
-bot.login(puddingbotToken);
+client.login(puddingbotToken);
+
+export { plexConnection };

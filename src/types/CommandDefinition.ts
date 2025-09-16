@@ -1,9 +1,9 @@
-import Discord, { ApplicationCommandData } from "discord.js";
-import { Category } from "../constants";
+import { ApplicationCommandData, ChatInputCommandInteraction, Client, PermissionsString } from "discord.js";
+import { Category } from "../constants.ts";
 
 export type CommandDefinition = ApplicationCommandData & {
   category: Category,
   commandDisplay?: string | string[],
-  requiredPermissions?: Discord.PermissionsString[],
-  executor: (interaction: Discord.ChatInputCommandInteraction, client: Discord.Client) => Promise<unknown>
+  requiredPermissions?: PermissionsString[],
+  executor: (interaction: ChatInputCommandInteraction, client: Client) => Promise<unknown>
 };

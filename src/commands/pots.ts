@@ -1,6 +1,6 @@
-import { CommandDefinition } from "../types/CommandDefinition";
 import { EmbedBuilder } from "discord.js";
-import { BOT_COLOR, Category } from "../constants";
+import { CommandDefinition } from "../types/CommandDefinition.ts";
+import { BOT_COLOR, Category } from "../constants.ts";
 
 export const pots: CommandDefinition = {
   name: "pots",

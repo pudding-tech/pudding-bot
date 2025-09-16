@@ -1,10 +1,14 @@
-export type Image = {
-  name: string,
-  url: string,
-  value: number,
-  title?: string,
-  description?: string,
-  footer?: string
+// export type Image2 = {
+//   name: string,
+//   url: string,
+//   value: number,
+//   title?: string,
+//   description?: string,
+//   footer?: string
+// }
+
+export type Image = ImageData & {
+  value: number
 }
 
 export type ImageData = {

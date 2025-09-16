@@ -1,7 +1,7 @@
-import { CommandDefinition } from "../types/CommandDefinition";
 import { EmbedBuilder } from "discord.js";
-import { commands } from "../commands";
-import { BOT_COLOR, Category, VERSION } from "../constants";
+import { CommandDefinition } from "../types/CommandDefinition.ts";
+import { commands } from "../commands.ts";
+import { BOT_COLOR, Category, VERSION } from "../constants.ts";
 
 export const help: CommandDefinition = {
   name: "help",

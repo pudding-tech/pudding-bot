@@ -1,13 +1,13 @@
-import Discord from "discord.js";
-import { plexConnection } from "../../index";
-import { Server } from "../../constants";
+import { ChatInputCommandInteraction, Client } from "discord.js";
+import { plexConnection } from "../../index.ts";
+import { Server } from "../../constants.ts";
 
 /**
  * Edit Plex message in services channel
  * @param {Discord.Client} bot Discord bot
  * @param {Discord.ChatInputCommandInteraction} interaction Interaction object
  */
-export const editPlexMessage = async (bot: Discord.Client, interaction: Discord.ChatInputCommandInteraction) => {
+export const editPlexMessage = async (bot: Client, interaction: ChatInputCommandInteraction) => {
 
   const serverText = interaction.options.getString("server");
   const operational = interaction.options.getNumber("operational");

@@ -1,7 +1,7 @@
-import { CommandDefinition } from "../types/CommandDefinition";
 import { EmbedBuilder, ApplicationCommandOptionType } from "discord.js";
-import { BOT_COLOR, Category } from "../constants";
-import { DebtEvent, DebtPayment, DebtPaymentSender } from "../types/types";
+import { CommandDefinition } from "../types/CommandDefinition.ts";
+import { BOT_COLOR, Category } from "../constants.ts";
+import { DebtEvent, DebtPayment, DebtPaymentSender } from "../types/types.ts";
 
 export const debt: CommandDefinition = {
   name: "debt",
@@ -21,16 +21,19 @@ export const debt: CommandDefinition = {
     await interaction.deferReply();
     const eventName = interaction.options.getString("event");
 
-    const events: DebtEvent[] = await fetch("https://pudding-debt-api.hundseth.com/api/events", {
+    const events: DebtEvent[] | null = await fetch("https://pudding-debt-api.hundseth.com/api/events", {
       method: "GET"
     })
       .then(res => {
         if (res.ok) {
-          return res.json();
+          return res.json() as Promise<DebtEvent[]>;
         }
         return null;
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        console.log(err);
+        return null;
+      });
 
     if (!events) {
       return interaction.editReply("There was an error contacting the Pudding Debt API.");
@@ -42,16 +45,19 @@ export const debt: CommandDefinition = {
       return interaction.editReply("Name *" + eventName + "* doesn't match any existing events.");
     }
 
-    const payments: DebtPayment[] = await fetch("https://pudding-debt-api.hundseth.com/api/payments?eventId=" + event.id, {
+    const payments: DebtPayment[] | null = await fetch("https://pudding-debt-api.hundseth.com/api/payments?eventId=" + event.id, {
       method: "GET"
     })
       .then(res => {
         if (res.ok) {
-          return res.json();
+          return res.json() as Promise<DebtPayment[]>;
         }
         return null;
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        console.log(err);
+        return null;
+      });
 
     if (!payments) {
       return interaction.editReply("There was an error contacting the Pudding Debt API.");
