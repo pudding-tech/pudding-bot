@@ -3,6 +3,7 @@ import { plexConnection } from "../index.ts";
 import { BOT_COLOR, Channels } from "../constants.ts";
 import { Server } from "../constants.ts";
 import { formatDate } from "../utils/formatDate.ts";
+import env from "../env.ts";
 
 export class PlexMessage {
 
@@ -178,12 +179,14 @@ export class PlexMessage {
           name: this.duckflixHeader,
           value: this.duckflixSubtext
         },
-        {
-          name: "\u200b",
-          value: "For more detailed information:\n" +
-            `- ${process.env.PUDDINGFLIX_INFO_URL}\n` +
-            `- ${process.env.DUCKFLIX_INFO_URL}`
-        },
+        ...(env.PUDDINGFLIX_INFO_URL || env.DUCKFLIX_INFO_URL
+          ? [{
+              name: "\u200b",
+              value: "For more detailed information:\n" +
+                (env.PUDDINGFLIX_INFO_URL ? `- ${env.PUDDINGFLIX_INFO_URL}\n` : "") +
+                (env.DUCKFLIX_INFO_URL ? `- ${env.DUCKFLIX_INFO_URL}` : "")
+            }]
+          : []),
         {
           name: "\u200b",
           value: "Request a show/movie at <https://overseerr.hundseth.com>\n\nContact <@110276423779897344> or <@111967042424274944> if you have questions"

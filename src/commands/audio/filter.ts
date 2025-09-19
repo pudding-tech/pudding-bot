@@ -26,7 +26,7 @@ export const filter: CommandDefinition = {
       description: "Name of filter",
       required: false,
       type: ApplicationCommandOptionType.String,
-      choices: [filters.map(f => ({ name: f, value: f }))].flat()
+      choices: filters.map(f => ({ name: f, value: f }))
     }
   ],
   executor: async (interaction) => {

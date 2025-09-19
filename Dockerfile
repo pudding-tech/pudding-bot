@@ -20,10 +20,6 @@ FROM node:24-alpine
 # Install ffmpeg
 RUN apk add --no-cache ffmpeg
 
-# Set default environment and time zone
-ENV NODE_ENV="production"
-ENV TZ="Europe/Oslo"
-
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev
