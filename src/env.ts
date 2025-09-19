@@ -7,6 +7,7 @@ interface EnvVariables {
   PUDDINGBOT_CLIENT_ID: string;
   GUILD_ID: string;
 
+  MIKANE_API_KEY?: string;
   PUDDINGFLIX_HOST?: string;
   PUDDINGFLIX_PORT?: string;
   PUDDINGFLIX_INFO_URL?: string;
@@ -54,6 +55,7 @@ const createEnvVariables = (env: NodeJS.ProcessEnv): EnvVariables => {
     PUDDINGBOT_CLIENT_ID: env.PUDDINGBOT_CLIENT_ID,
     GUILD_ID: env.GUILD_ID,
 
+    MIKANE_API_KEY: env.MIKANE_API_KEY,
     PUDDINGFLIX_HOST: env.PUDDINGFLIX_HOST,
     PUDDINGFLIX_PORT: env.PUDDINGFLIX_PORT,
     PUDDINGFLIX_INFO_URL: env.PUDDINGFLIX_INFO_URL,
