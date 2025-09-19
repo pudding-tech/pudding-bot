@@ -2,6 +2,7 @@ import { EmbedBuilder } from "discord.js";
 import { CommandDefinition } from "../types/CommandDefinition.ts";
 import { commands } from "../commands.ts";
 import { BOT_COLOR, Category, VERSION } from "../constants.ts";
+import env from "../env.ts";
 
 export const help: CommandDefinition = {
   name: "help",
@@ -48,7 +49,7 @@ export const help: CommandDefinition = {
     });
 
     // Set environment version to display
-    const version = process.env.NODE_ENV === "production" ? VERSION : "dev version";
+    const version = env.IN_PROD ? VERSION : "dev version";
 
     const helpEmbed = new EmbedBuilder({
       title: `PuddingBot  \`${version}\``,

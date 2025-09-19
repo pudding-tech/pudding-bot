@@ -1,4 +1,3 @@
-import dotenv from "dotenv";
 import { ActivityType, Client, EmbedBuilder, Events, GatewayIntentBits, REST, Routes, TextChannel} from "discord.js";
 import { Player } from "discord-player";
 import { DefaultExtractors } from "@discord-player/extractor";
@@ -6,26 +5,9 @@ import { PlexConnection } from "./PlexConnection.ts";
 import { commands } from "./commands.ts";
 import { VERSION, BOT_COLOR, Channels } from "./constants.ts";
 import { getWelcomeMessage } from "./messages/welcomes.ts";
+import env from "./env.ts";
 
-dotenv.config({ quiet: true });
-
-const inProd = process.env.NODE_ENV === "production" ? true : false;
-const puddingbotToken = process.env.PUDDINGBOT_TOKEN;
-const clientId = process.env.PUDDINGBOT_CLIENT_ID;
-const guilds = process.env.GUILD_ID?.split(",");
-
-if (!puddingbotToken) {
-  console.error("Please provide a Discord bot token as an environment variable");
-  process.exit(0);
-}
-if (!clientId) {
-  console.error("Please provide a Discord bot client ID as an environment variable");
-  process.exit(0);
-}
-if (!guilds) {
-  console.error("Please provide a Discord guild ID as an environment variable");
-  process.exit(0);
-}
+const guilds = env.GUILD_ID?.split(",");
 
 const client = new Client({
   intents: [
@@ -37,10 +19,10 @@ const client = new Client({
 });
 
 // Register commands to Discord servers via API
-const rest = new REST({ version: "10" }).setToken(puddingbotToken);
+const rest = new REST({ version: "10" }).setToken(env.PUDDINGBOT_TOKEN);
 
 guilds.forEach(async (guildId) => {
-  await rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands });
+  await rest.put(Routes.applicationGuildCommands(env.PUDDINGBOT_CLIENT_ID, guildId), { body: commands });
   console.log("Successfully registered " + commands.length + " commands for server: " + guildId);
 });
 
@@ -53,13 +35,13 @@ const player = new Player(client);
 await player.extractors.loadMulti(DefaultExtractors);
 
 client.once(Events.ClientReady, async (readyClient) => {
-  console.log(`${readyClient.user?.username} (${inProd ? VERSION : "dev version"}) sucessfully logged in!`);
+  console.log(`${readyClient.user?.username} (${env.IN_PROD ? VERSION : "dev version"}) sucessfully logged in!`);
 
   // Set bot activity
   readyClient.user?.setPresence({
     status: "online",
     activities: [{
-      name: inProd ? "/help" : "in dev mode",
+      name: env.IN_PROD ? "/help" : "in dev mode",
       type: ActivityType.Playing
     }]
   });
@@ -126,6 +108,6 @@ player.events.on("playerError", (_queue, err) => {
 });
 
 // Login bot
-client.login(puddingbotToken);
+client.login(env.PUDDINGBOT_TOKEN);
 
 export { plexConnection };

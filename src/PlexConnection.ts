@@ -2,6 +2,7 @@ import { Client } from "discord.js";
 import { Cron } from "croner";
 import { DOMParser } from "@xmldom/xmldom";
 import { PlexMessage } from "./messages/PlexMessage.ts";
+import env from "./env.ts";
 
 export class PlexConnection {
 
@@ -30,11 +31,11 @@ export class PlexConnection {
    * Automatically checks servers and updates Discord channel every hour
    */
   run = async () => {
-    if (!process.env.PUDDINGFLIX_HOST || !process.env.PUDDINGFLIX_PORT) {
+    if (!env.PUDDINGFLIX_HOST || !env.PUDDINGFLIX_PORT) {
       console.log("Missing Puddingflix environment variables - will not attempt to connect to Plex services.");
       return;
     }
-    if (!process.env.DUCKFLIX_HOST || !process.env.DUCKFLIX_PORT) {
+    if (!env.DUCKFLIX_HOST || !env.DUCKFLIX_PORT) {
       console.log("Missing Duckflix environment variables - will not attempt to connect to Plex services.");
       return;
     }
@@ -61,10 +62,10 @@ export class PlexConnection {
     let duckflix = false;
 
     // Check if Puddingflix is online
-    puddingflix = await this.checkServerStatus("Puddingflix", process.env.PUDDINGFLIX_HOST!, process.env.PUDDINGFLIX_PORT!);
+    puddingflix = await this.checkServerStatus("Puddingflix", env.PUDDINGFLIX_HOST!, env.PUDDINGFLIX_PORT!);
 
     // Check if Duckflix is online
-    duckflix = await this.checkServerStatus("Duckflix", process.env.DUCKFLIX_HOST!, process.env.DUCKFLIX_PORT!);
+    duckflix = await this.checkServerStatus("Duckflix", env.DUCKFLIX_HOST!, env.DUCKFLIX_PORT!);
 
     const puddingflixChanged = puddingflix === this.puddingflix ? false : true;
     const duckflixChanged = duckflix === this.duckflix ? false : true;
