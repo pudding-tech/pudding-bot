@@ -1,12 +1,3 @@
-// export type Image2 = {
-//   name: string,
-//   url: string,
-//   value: number,
-//   title?: string,
-//   description?: string,
-//   footer?: string
-// }
-
 export type Image = ImageData & {
   value: number
 }
@@ -19,29 +10,36 @@ export type ImageData = {
   footer?: string
 }
 
-export type DebtEvent = {
-  id: number,
+export type MikaneEvent = {
+  id: string,
   name: string,
-  created: Date
+  description: string,
+  created: Date,
+  adminIds: string[],
+  private: boolean,
+  status: {
+    id: number,
+    name: string
+  }
 }
 
-export type DebtPayment = {
+export type MikanePayment = {
   sender: {
-    id: number,
+    id: string,
     name: string
   },
   receiver: {
-    id: number,
+    id: string,
     name: string
   },
   amount: number
 }
 
-export type DebtPaymentSender = {
-  id: number,
+export type MikanePaymentSender = {
+  id: string,
   name: string
   receivers: {
-    id: number,
+    id: string,
     name: string,
     amount: number
   }[]
